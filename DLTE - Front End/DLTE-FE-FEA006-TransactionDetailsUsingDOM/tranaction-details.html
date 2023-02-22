@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction Details</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+</head>
+<body>
+        <!-- we initialize id to each para -->
+     <p id="tid">
+            <p>
+     <p id="tmd">
+            <p>
+     <p id="ttp">
+             <p>
+     <p id="tdt">
+             <p>
+     <p id="tam">
+             <p>
+     <p id="rec">
+            <p>
+
+    <script>
+        // declare the variables we will use
+        let transid, tmode,ttype, tdate, tamn, recep;
+
+        // take input from the user
+
+        transid=prompt("ENTER THE TRANSACTION ID","")
+        tmode=prompt("ENTER THE MODE OF TRANSACTION","")
+        ttype=prompt("ENTER THE TRANSACTION TYPE","")
+        tdate=prompt("ENTER THE TRANSACTION DATE","")
+        tamn=prompt("ENTER THE TRANSACTION AMOUNT","")
+        recep=prompt("ENTER THE RECEPIENT NAME","")
+
+        // display on the page the basic details
+
+        document.getElementById("tid").innerHTML="Transaction ID is "+transid
+        document.getElementById("tmd").innerHTML="Transaction Mode is "+tmode
+        document.getElementById("ttp").innerHTML="Transaction Type is "+ttype
+        document.getElementById("tdt").innerHTML="Transaction Date is "+tdate
+        document.getElementById("tam").innerHTML="Transaction Amount is "+tamn
+        document.getElementById("rec").innerHTML="Recepient name is "+recep
+
+
+       </script>
+</body>
+</html>
