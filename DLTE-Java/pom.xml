@@ -5,10 +5,10 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.example</groupId>
-  <artifactId>DLTE-JAVA-JAVA001</artifactId>
+  <artifactId>DLTE-Java-JV001-PersonalLoanCalculator</artifactId>
   <version>1.0-SNAPSHOT</version>
 
-  <name>DLTE-JAVA-JAVA001</name>
+  <name>DLTE-Java-JV001-PersonalLoanCalculator</name>
   <!-- FIXME change it to the project's website -->
   <url>http://www.example.com</url>
 
