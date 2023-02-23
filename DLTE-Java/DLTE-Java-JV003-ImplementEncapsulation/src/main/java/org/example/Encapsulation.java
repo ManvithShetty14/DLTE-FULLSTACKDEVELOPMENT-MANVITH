@@ -10,7 +10,7 @@ public class Encapsulation{
 
 class customer{
     public void openDeposits(){
-        //int loanNumber=123;
+      
         class request{
             private String customerName;
             private String PAN;
@@ -72,8 +72,7 @@ class customer{
                 this.contact = contact;
             }
 
-            // constructor overloading
-            // default constructor
+            
             public request(){}
 
             // parameterized constructor
