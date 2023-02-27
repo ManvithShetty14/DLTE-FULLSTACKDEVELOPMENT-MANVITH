@@ -1,43 +1,22 @@
 package org.example;
-
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.util.*;
+import java.util.Scanner;
 
 public class SMSBanking {
     public static void main(String[] args) {
-
-
+        Scanner sc = new Scanner(System.in);
+        Sms obj = new Sms("Manvith","8765556789",500000);
+        System.out.println("Enter the code:");
+        Integer num = sc.nextInt();
+        obj.message(num);
     }
-
 }
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-
+//Multilevel Inheritance
 class Kyc{
-    private long accNum;
     private String name;
-    private double balance;
-    private int upi;
+    private String accno;
+    private Integer balance;
 
-    public Kyc(long accNum, String name, double balance, int upi) {
-        this.accNum = accNum;
-        this.name = name;
-        this.balance = balance;
-        this.upi = upi;
-    }
-
-    public long getAccNum() {
-        return accNum;
-    }
-
-    public void setAccNum(long accNum) {
-        this.accNum = accNum;
-    }
-
+    //Getters and Setters
     public String getName() {
         return name;
     }
@@ -46,47 +25,82 @@ class Kyc{
         this.name = name;
     }
 
-    public double getBalance() {
+    public String getAccno() {
+        return accno;
+    }
+
+    public void setAccno(String accno) {
+        this.accno = accno;
+    }
+
+    public Integer getBalance() {
         return balance;
     }
 
-    public void setBalance(double balance) {
+    public void setBalance(Integer balance) {
         this.balance = balance;
     }
-
-    public int getUpi() {
-        return upi;
-    }
-
-    public void setUpi(int upi) {
-        this.upi = upi;
-    }
 }
-
-class Transaction extends Kyc {
+//Transaction class inherits Kyc class
+class Transaction extends Kyc{
     Scanner sc = new Scanner(System.in);
-
-    public void balanceEnquiry() {
-        System.out.println("Enter the account  number");
-        long accnum = sc.nextLong();
-        System.out.println("Enter the Holder Name");
-        String name = sc.next();
-        System.out.println("Enter the UPI pin");
-        int upi = sc.nextInt();
-        if (upi.equals(getUpi())) {
-            System.out.println("The balance is" + this.balance);
+       //method for balance enquiry
+    public void balanceEnquiry(){
+        System.out.println("Name: "+ getName());
+        System.out.println("Account Number: "+ getAccno());
+        System.out.println("Balance: "+ getBalance());
+    }
+    // method for recharge
+    public void recharge(){
+        System.out.println("Enter the mobile number:");
+        Long number = sc.nextLong();
+        System.out.println("Enter the recharge amount:");
+        Integer amount = sc.nextInt();
+        if(amount<=getBalance()){
+            System.out.println("Recharge of amount "+amount+" successfull");
+            setBalance(getBalance()-amount);
+            System.out.println("Remaining balance: "+getBalance());
+        }
+        else {
+            System.out.println("Insufficient Balance!!!");
+        }
+    }
+    //method for booking tickets
+    public void booking(){
+        System.out.println("Ticket price: Rs.100\nEnter the number of tickets you want to buy: ");
+        Integer tickets = sc.nextInt();
+        tickets*= 100;
+        if(tickets<=getBalance()){
+            System.out.println("Booking of tickets worth Rs"+tickets+" successful");
+            setBalance(getBalance()-tickets);
+            System.out.println("Remaining balance: "+getBalance());
+        }
+        else {
+            System.out.println("Insufficient Balance...");
         }
     }
 }
-
-    public void recharge(){
-
+//Sms class inherits Transaction class
+class Sms extends Transaction{
+    Scanner sc = new Scanner((System.in));
+    public Sms(String name, String accno, Integer balance) {
+        setName(name);
+        setAccno(accno);
+        setBalance(balance);
+    }
+    public void message(Integer num){
+        if(num == 1901){
+            balanceEnquiry();
+        }
+        else if(num == 2245){
+            recharge();
+        }
+        else if(num == 3467){
+            booking();
+        }
+        else {
+            System.out.println("Invalid code...");
+        }
     }
 
-    public void bookticket(){
-
-    }
-
-
-
-
+}
