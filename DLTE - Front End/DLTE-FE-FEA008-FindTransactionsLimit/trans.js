@@ -19,7 +19,7 @@ function limit(){
             if(debitcount>2){
                 if(confirm("You have reached the debit limit!!\nThis trasaction will cost you Rs.20 extra\n\nDo you wan to proceed?")==true){
                     alert(amt+" debited.")
-                    history = "<tr class='bg-danger-subtle'><td>"+amt+"</td><td>Debit</td></tr>";
+                    history = "<tr class='bg-danger'><td>"+amt+"</td><td>Debit</td></tr>";
                     debitcount += 1;
                 }
                 else{
@@ -30,7 +30,7 @@ function limit(){
             }
             else{
                 alert(amt+" debited.")
-                history = "<tr class='bg-danger-subtle'><td>"+amt+"</td><td>Debit</td></tr>";
+                history = "<tr class='bg-danger'><td>"+amt+"</td><td>Debit</td></tr>";
                 debitcount += 1;
             }
         }

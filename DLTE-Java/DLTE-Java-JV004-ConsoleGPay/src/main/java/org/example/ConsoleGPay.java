@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import java.util.Scanner;
 
 @Data
+
+
 class GPay {
     Scanner sc = new Scanner(System.in);
     private int accnum;
@@ -20,6 +22,7 @@ class GPay {
         this.name = name;
         this.upipin = upipin;
     }
+
 
     public int getAccnum() {
         return accnum;
