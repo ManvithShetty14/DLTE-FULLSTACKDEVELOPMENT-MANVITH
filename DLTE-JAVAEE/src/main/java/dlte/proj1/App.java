@@ -29,6 +29,7 @@ public class App
                 sconnect.displayData();
                 break;
             case 3:
+                return;
 
         }
     }while(ch!=5);
