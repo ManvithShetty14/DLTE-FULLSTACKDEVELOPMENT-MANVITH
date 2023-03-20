@@ -23,8 +23,12 @@ public class TransactionService {
         return transactionRepository.findById(transactionId);
     }
 
-    public List<String> implementationOfFindAllBySender(String sent) {
+    public List<Transactions> implementationOfFindAllBySender(String sent) {
         return transactionRepository.findAllBySender(sent);
+    }
+
+    public List<Transactions> implementationOfFindAllByGreaterAmount(Double balance){
+        return transactionRepository.findAllByAmount(balance);
     }
 
     public String implementationOfDeleteById(long transactionId) {
@@ -32,5 +36,9 @@ public class TransactionService {
         String information = transactions.getTransaction_id() + " has been Deleted";
         transactionRepository.deleteById(transactionId);
         return information;
+    }
+
+    public List<Double> implementOfFindAllByType(String option){
+        return transactionRepository.findAllByType(option);
     }
 }

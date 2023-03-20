@@ -11,5 +11,11 @@ import java.util.List;
 public interface TransactionRepository extends CrudRepository<Transactions,Long> {
 
     @Query("from Transactions where sender like %:sender_name%")
-    List<String> findAllBySender(String sender_name);
+    List<Transactions> findAllBySender(String sender_name);
+
+    @Query("from Transactions where amount>= :balance")
+    List<Transactions> findAllByAmount(Double  balance);
+
+    @Query("select amount from Transactions where type like %:option%")
+    List<Double> findAllByType(String option);
 }
