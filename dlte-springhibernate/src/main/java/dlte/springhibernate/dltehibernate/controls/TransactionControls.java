@@ -29,6 +29,11 @@ public class TransactionControls {
         return transactionService.implementationOfFindById(transactionId);
     }
 
+    @GetMapping("/findAllBySender/{sent}")
+    public List<String> findAllBySenderMethodCalling(@PathVariable("sent") String sent){
+        return transactionService.implementationOfFindAllBySender(sent);
+    }
+
     @DeleteMapping("/delete/{transactionId}")
     public String deleteByIdMethodCalling(@PathVariable("transactionId") long transactionId){
         return transactionService.implementationOfDeleteById(transactionId);
