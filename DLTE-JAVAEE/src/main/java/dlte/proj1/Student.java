@@ -6,13 +6,13 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class Stud {
+public class Student {
     private int reg_no;
     private String name;
     private int age ,pincode,address_id;
     private String email, street, city;
     private Integer door_no;
-    public Stud(int reg_no, String name, int age, String email, String address, int door_no, String street, String city, int pincode,int address_id) {
+    public Student(int reg_no, String name, int age, String email, String address, int door_no, String street, String city, int pincode,int address_id) {
         this.reg_no = reg_no;
         this.name = name;
         this.age = age;
