@@ -16,9 +16,11 @@ public class TransactionService {
     public Transactions implementationOfSave(Transactions transactions){
         return transactionRepository.save(transactions);
     }
+
     public List<Transactions> implementationOfFindAll() {
         return (List<Transactions>) transactionRepository.findAll();
     }
+
     public Optional<Transactions> implementationOfFindById(Long transactionId) {
         return transactionRepository.findById(transactionId);
     }
