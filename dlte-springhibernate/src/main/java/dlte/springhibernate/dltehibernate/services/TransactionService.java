@@ -18,6 +18,7 @@ public class TransactionService {
     }
 
     public List<Transactions> implementationOfFindAll() {
+
         return (List<Transactions>) transactionRepository.findAll();
     }
 

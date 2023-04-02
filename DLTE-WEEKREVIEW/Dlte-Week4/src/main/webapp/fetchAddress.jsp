@@ -104,6 +104,9 @@
         %>
     </div>
 </div>
+<form method="link" action="logout.jsp">
+    <center><input type="submit" class="btn btn-danger" value="Logout"/></center>
+</form>
 
 <%--    </div>--%>
 <%--</div>--%>

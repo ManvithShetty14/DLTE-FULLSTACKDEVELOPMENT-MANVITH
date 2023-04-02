@@ -35,9 +35,6 @@
             border: 2px solid green;
             box-sizing: border-box;
         }
-        button:hover {
-            opacity: 0.7;
-        }
 
         .container {
             padding: 25px;
@@ -53,7 +50,7 @@
         <input type="text" placeholder="Enter Username" name="username">
         <label>Password : </label>
         <input type="password" placeholder="Enter Password" name="password">
-        <button type="submit">Login</button>
+        <button type="submit" class="container" style="background-color: darkcyan; border-color: black">Login</button>
     </div>
 </form>
 </body>

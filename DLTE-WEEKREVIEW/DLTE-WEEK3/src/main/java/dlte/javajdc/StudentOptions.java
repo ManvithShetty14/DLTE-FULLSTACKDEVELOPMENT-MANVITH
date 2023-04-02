@@ -57,17 +57,17 @@ public class StudentOptions implements StudentInterface {
 
     @Override
     public void display() throws SQLException {
-        query = "Select * from student, address where address_id = address_id";
+        query = "select * from student, address where student.address_id = address.address_id";
         preparedStatement = connection.prepareStatement(query);
         resultSet = preparedStatement.executeQuery();
         while(resultSet.next()) {
-            System.out.println(resultSet.getInt("Register_number")+" "+resultSet.getString("Student_name")+" "+resultSet.getInt("Student_age")+" "+resultSet.getString("Student_email")+" "+" "+resultSet.getInt("Door no")+" "+resultSet.getString("Area")+" "+resultSet.getString("City")+" "+resultSet.getInt("Pincode"));
+            System.out.println(resultSet.getInt("Reg_No")+" "+resultSet.getString("name")+" "+resultSet.getInt("age")+" "+resultSet.getString("email")+" "+" "+resultSet.getInt("Door_no")+" "+resultSet.getString("street")+" "+resultSet.getString("City")+" "+resultSet.getInt("Pincode"));
         }
     }
 
 
     @Override
-    public void delete(int  reg_no) throws SQLException {
+    public  String delete(int  reg_no) throws SQLException {
         query = "delete from student where reg_no = ?";
         preparedStatement = connection.prepareStatement(query);
         preparedStatement.setInt(1,reg_no);
@@ -75,5 +75,6 @@ public class StudentOptions implements StudentInterface {
             System.out.println("Record deleted!!");
         else
             System.out.println("Record cannot delete!");
+        return "deleted";
     }
 }

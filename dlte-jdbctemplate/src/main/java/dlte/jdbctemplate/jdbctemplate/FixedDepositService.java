@@ -16,29 +16,29 @@ public class FixedDepositService {
 
     private JdbcTemplate jdbcTemplate;
 
-    public List<FixedDeposit> insertion(FixedDeposit fixedDeposit)
+    public String insertion(FixedDeposit fixedDeposit)
     {
-        String information=fixedDeposit.getDepositId()+"is created.";
-        jdbcTemplate.update("insert into fixedDeposit values(deposit_seq.NEXTVAL,?,?,?,?,?,?,?)",new Object[]{fixedDeposit.getDepositTenure(),fixedDeposit.getDepositAmount(),fixedDeposit.getDepositDate(),fixedDeposit.getInterestRate(),fixedDeposit.getMatureDate(),fixedDeposit.getMatureAmount(),fixedDeposit.getModeOfDivident()});
-        return information;
+//        String information=fixedDeposit.getDepositId()+"is created.";
+        jdbcTemplate.update("insert into fixed_deposit values(?,?,?,?,?,?,?,?)",new Object[]{fixedDeposit.getDepositId(),fixedDeposit.getDepositTenure(),fixedDeposit.getDepositAmount(),fixedDeposit.getDepositDate(),fixedDeposit.getInterestRate(),fixedDeposit.getMatureDate(),fixedDeposit.getMatureAmount(),fixedDeposit.getModeOfDivident()});
+        return "INSERTED";
     }
 
-//    public List<FixedDeposit> fetchByDate(Date dep_date){
-//        return jdbcTemplate.query("select * from fixedDeposit where deposit_date=?",new Object[]{dep_date},new FixedDepositMappers());
-//    }
+    public List<FixedDeposit> fetchByDate(Date dep_date){
+        return jdbcTemplate.query("select * from fixedDeposit where deposit_date=?",new Object[]{dep_date},new FixedDepositMappers());
+    }
 
     class FixedDepositMappers implements RowMapper<FixedDeposit>{
         @Override
         public FixedDeposit mapRow(ResultSet rs,int rowNo) throws SQLException {
             FixedDeposit fixedDeposit=new FixedDeposit();
-            fixedDeposit.setDepositId(rs.getInt("deposit_id"));
-            fixedDeposit.setDepositTenure(rs.getInt("deposit_tenure"));
-            fixedDeposit.setDepositAmount(rs.getFloat("deposit_amount"));
-            fixedDeposit.setDepositDate(rs.getDate("deposit_date"));
-            fixedDeposit.setInterestRate(rs.getFloat("interest_rate"));
-            fixedDeposit.setMatureDate(rs.getDate("mature_date"));
-            fixedDeposit.setMatureAmount(rs.getFloat("mature_amount"));
-            fixedDeposit.setModeOfDivident(rs.getString("mode_of_divident"));
+            fixedDeposit.setDepositId(rs.getInt("depositId"));
+            fixedDeposit.setDepositTenure(rs.getInt("depositTenure"));
+            fixedDeposit.setDepositAmount(rs.getFloat("depositAmount"));
+            fixedDeposit.setDepositDate(rs.getDate("depositDate"));
+            fixedDeposit.setInterestRate(rs.getFloat("interestRate"));
+            fixedDeposit.setMatureDate(rs.getDate("matureDate"));
+            fixedDeposit.setMatureAmount(rs.getFloat("matureAmount"));
+            fixedDeposit.setModeOfDivident(rs.getString("modeOfDivident"));
 
             return fixedDeposit;
         }

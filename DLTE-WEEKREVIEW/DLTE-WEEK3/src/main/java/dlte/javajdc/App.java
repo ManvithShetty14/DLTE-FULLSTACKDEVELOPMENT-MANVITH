@@ -53,6 +53,7 @@ public class App
                 case 4:
                     flag=false;
                     System.out.println("Thank you");
+                    break;
                 default:
                     System.out.println("Invalid Input");
             }

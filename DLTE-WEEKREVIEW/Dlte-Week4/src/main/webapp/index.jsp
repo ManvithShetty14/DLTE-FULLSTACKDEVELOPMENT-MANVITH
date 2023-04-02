@@ -7,7 +7,7 @@
 <h2></h2>
 
 <a href="InsertRecord.jsp">
-    <h2 class="bg-color-info">Insert record</h2></a>
+    <button class="bg-butt"></button></a>
 <a href="fetch.jsp">
     <h2 class="bg-color-info">View Student record</h2></a>
 </body>

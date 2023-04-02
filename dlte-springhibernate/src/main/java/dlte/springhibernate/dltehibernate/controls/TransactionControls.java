@@ -21,7 +21,7 @@ public class TransactionControls {
 
     //to view all records
     @PostMapping("/findAll")
-    public List<Transactions> findAllMethodCalling(){
+    public List<Transactions> findAllMethodCalling() {
         return transactionService.implementationOfFindAll();
     }
 
