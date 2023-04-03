@@ -57,14 +57,10 @@ public class InsertServlet extends HttpServlet {
 
             logger.info(bundle.getString("dbInsertError"));
             printWriter.write(bundle.getString("dbInsertError"));
-
         }
         else {
             logger.info(bundle.getString("dbInsert"));
-
             printWriter.write(bundle.getString("dbInsert"));
-
-
         }
     }
 

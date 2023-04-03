@@ -44,7 +44,7 @@
 </head>
 <body>
 <center> <h1> Student Login</h1> </center>
-<form action="index.jsp" method="post">
+<form action="validate.jsp" method="post">
     <div class="container">
         <label>Username : </label>
         <input type="text" placeholder="Enter Username" name="username">

@@ -43,7 +43,7 @@ public class DaoOperate implements Operation {
                 e.printStackTrace();
             }
 
-            return 0;
+            return 1;
     }
 
 

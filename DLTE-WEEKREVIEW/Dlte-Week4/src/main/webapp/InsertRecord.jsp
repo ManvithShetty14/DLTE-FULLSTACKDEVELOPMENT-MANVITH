@@ -12,6 +12,23 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
     <title>Student Record</title>
 </head>
+<style>
+    Body {
+        font-family: Calibri, Helvetica, sans-serif;
+        background-color: grey;
+    }
+    input[type=text], input[type=number], input[type=email] {
+        width: 100%;
+        margin: 8px 0;
+        padding: 12px 20px;
+        display: inline-block;
+        border: 2px solid green;
+        box-sizing: border-box;
+    }
+    form {
+        border: 3px solid #f1f1f1;
+    }
+</style>
 <body>
 <form action="insertion" method="post">
     <h2>Student Details</h2>
