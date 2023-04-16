@@ -24,7 +24,7 @@
     </style>
 </head>
 <body>
-<form action="fetchAddress.jsp" method="post" name="fetch"><
+<form action="fetchAddress.jsp" method="post" name="fetch">
 <div>
 <%
     try{

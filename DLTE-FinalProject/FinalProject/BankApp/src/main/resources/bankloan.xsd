@@ -1,0 +1,42 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            targetNamespace="http://soap.bank.web.bankloansoapwebservice"
+            xmlns:tns="http://soap.bank.web.bankloansoapwebservice"
+            elementFormDefault="qualified">
+<!--POJO CLASS-->
+<xsd:complexType name="loan_scheme">
+    <xsd:sequence>
+        <xsd:element name="loanSchemeId" type="xsd:int" />
+        <xsd:element name="loanSchemeType" type="xsd:string"/>
+        <xsd:element name="loanSchemeName" type="xsd:string" />
+        <xsd:element name="loanSchemeDesc" type="xsd:string" />
+        <xsd:element name="loanSchemeROI" type="xsd:float"/>
+    </xsd:sequence>
+</xsd:complexType>
+
+
+<!--Service Status-->
+<xsd:complexType name="serviceStatus">
+<xsd:sequence>
+    <xsd:element name="status" type="xsd:string" />
+    <xsd:element name="message" type="xsd:string" />
+</xsd:sequence>
+</xsd:complexType>
+
+<!--    Create a new Loan-->
+    <xsd:element name="createNewLoanRequest">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="bankloan" type="tns:loan_scheme"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="createNewLoanResponse">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="serviceStatus" type="tns:serviceStatus" />
+                <xsd:element name="bankloan" type="tns:loan_scheme" />
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+</xsd:schema>
