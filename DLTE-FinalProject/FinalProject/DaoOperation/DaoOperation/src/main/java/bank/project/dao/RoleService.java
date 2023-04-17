@@ -24,19 +24,6 @@ public class RoleService implements BankOperations{
     private JdbcTemplate jdbcTemplate;
     private Logger logger= LoggerFactory.getLogger(Role.class);
 
-//    public  Optional<Role> listOne(String uname,String pass){
-//        return Optional.of(jdbcTemplate.queryForObject("select * from role where username=? and password=?", new Object[]{uname}))
-//    }
-
-//    public Optional<Role> listOne(String uname,String pass){
-//        return Optional.of(jdbcTemplate.queryForObject("select * from bankers where username=? and password=?",new Object[]{id},
-//                new BeanPropertyRowMapper<>(Role.class)));
-//    }
-
-//    public List<Role> listAll(){
-//        return jdbcTemplate.query("select * from role",new RoleMapper());
-//    }
-
 //    @Override
 //    public int getAttempts(int id){
 //        int attempt=jdbcTemplate.queryForObject("select failed_attempts from role where role_id=?",Integer.class,id);
@@ -46,7 +33,7 @@ public class RoleService implements BankOperations{
 //    @Override
 //    public  void setAttempts(int id){
 //
-//        jdbcTemplate.update("update role set failed_attempts=3 where role_id=?",id);
+//       jdbcTemplate.update("update role set failed_attempts=3 where role_id=?",id);
 //    }
 //
 //    public void reduceAttempts(int id){
@@ -55,21 +42,19 @@ public class RoleService implements BankOperations{
 //
 //    public void updateStatus(){
 //        jdbcTemplate.update("update role set role_status='inactive' failed_attempts=0");
-//
 //    }
 
 @Override
     public Role loginByName(String name){
         try{
-
             Role role=jdbcTemplate.queryForObject("select * from role where username=? ",new RoleMapper(),name);
-            logger.warn("the query is executed");
+            logger.warn(resourceBundle.getString("loginquery"));
             return role;
         }catch (DataAccessException e){
+            logger.info(resourceBundle.getString("loginexception"+e));
             return null;
         }
-
-    }
+}
 
 //    public UserDetails loadByUsername(String name) throws UsernameNotFoundException{
 //        Role role=readOne(name);
@@ -83,25 +68,22 @@ public class RoleService implements BankOperations{
     public void failedAttempts(int id){
         jdbcTemplate.update("update role set failed_attempts=failed_attempts+1 where role_id=?",id);
         jdbcTemplate.update("update role set role_status='Inactive' where failed_attempts=3");
+        logger.info(resourceBundle.getString("updatequery"));
+
     }
 
-//    @Override
-//    public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException{
-//        Role role=readOne(name);
-//        if(role==null){
-//            throw new UsernameNotFoundException(resourceBundle.getString("user does not exist"));
-//        }
-//        return role;
-//    }
 
     @Override
     public List<Loan_scheme> listAllLoan(){
-        return jdbcTemplate.query("select * from loan_scheme",new LoanMapper());
+    logger.info(resourceBundle.getString("loanlistquery"));
+    return jdbcTemplate.query("select * from loan_scheme",new LoanMapper());
     }
 
     @Override
     public String insertion(Loan_scheme loan_scheme){
+        logger.info(resourceBundle.getString("loancreatequery"));
     jdbcTemplate.update("insert into loan_scheme values(loan_scheme_id_seq.NEXTVAL,?,?,?,?)",new Object[]{loan_scheme.getLoanSchemeType(),loan_scheme.getLoanSchemeName(),loan_scheme.getLoanSchemeDesc(),loan_scheme.getLoanSchemeROI()});
+
     return "created";
     }
 
@@ -110,7 +92,6 @@ public class RoleService implements BankOperations{
         @Override
         public Role mapRow(ResultSet rs, int rowNum) throws SQLException {
             Role role=new Role();
-            logger.info("Ready to be received");
             role.setRoleId(rs.getInt("role_id"));
             role.setRoleName(rs.getString("role_name"));
             role.setRoleDesc(rs.getString("role_desc"));
@@ -119,7 +100,6 @@ public class RoleService implements BankOperations{
             role.setUsername(rs.getString("username"));
             role.setPassword(rs.getString("password"));
             role.setFailedAttempts(rs.getInt("failed_attempts"));
-            logger.info("Ready to be viewed");
             return role;
         }
     }

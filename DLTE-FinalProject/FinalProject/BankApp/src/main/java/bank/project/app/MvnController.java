@@ -19,5 +19,10 @@ public class MvnController {
     public String loanlist(){
         return "loanlist";
     }
+    @GetMapping("/createloan")
+    public String loancreate() { return "loancreate";}
+    @GetMapping("/customersearch")
+    public String cust_search() { return "cust_search";}
+
 
 }

@@ -36,11 +36,11 @@
 //
 //    }
 //
-////    @Test
-////     public void getByUsername(){
-////        String uname="mainsh";
-////        when(roleService.loginByName(uname)).thenReturn((Role) Stream.of(new Role(102,"Bank Admin","Ensure qualitative services to bank customers.","Inactive",103,"gourav","gourav123",0)).collect(Collectors.toList()));
-////        assertEquals(1,roleService.)
-////    }
+//    @Test
+//     public void getByUsername(){
+//        String uname="mainsh";
+//        when(roleService.loginByName(uname)).thenReturn((Role) Stream.of(new Role(102,"Bank Admin","Ensure qualitative services to bank customers.","Inactive",103,"gourav","gourav123",0)).collect(Collectors.toList()));
+//        assertEquals(1,roleService.)
+//    }
 //
 //}

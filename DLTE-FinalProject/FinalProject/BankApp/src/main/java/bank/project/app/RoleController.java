@@ -58,12 +58,13 @@ public class RoleController {
 
     @PostMapping("/createloan")
     public String adding(@RequestParam("loanType") String loanType,@RequestParam("loanName") String loanName,@RequestParam("loanDesc") String loanDesc,@RequestParam("loanROI") Float loanROI){
+        logger.info(resourceBundle.getString("loancreate"));
         Loan_scheme loan_scheme=new Loan_scheme();
-
         loan_scheme.setLoanSchemeType(loanType);
         loan_scheme.setLoanSchemeName(loanName);
         loan_scheme.setLoanSchemeDesc(loanDesc);
         loan_scheme.setLoanSchemeROI(loanROI);
+        logger.info(resourceBundle.getString("createloan"));
         return roleService.insertion(loan_scheme);
     }
 
