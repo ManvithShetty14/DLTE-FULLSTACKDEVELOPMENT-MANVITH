@@ -16,8 +16,6 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
         public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
             Role role=(Role) authentication.getPrincipal();
             logger.info(role+" in success handler");
-            // if(customer.getAttempts()==0)
-            // logger.info("deactivate");
             super.setDefaultTargetUrl("/web/dash");
             super.onAuthenticationSuccess(request,response,authentication);
         }
