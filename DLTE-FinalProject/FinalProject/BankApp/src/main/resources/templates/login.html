@@ -1,156 +1,134 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bank Admin Login Page</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-
-    <script>
-        $(document).ready(()=>{
-            $("#mybtn").click(()=> {
-                $.post('http://localhost:8085/signin',{
-                    uname : $("#username").val(),
-                    pass : $("#password").val()
-                }, function(response) {
-                    if(response=="Logged in successfully"){
-                        window.location.href="http://localhost:8085/web/dash";
-                    }
-                    else{
-                        alert(response);
-                    }
-                });
-
-            }); });
-
-    </script>
-
-    <style>
-        Body {
-            font-family: 'Trebuchet MS', sans-serif;
-            background-color: lightseagreen;
-        }
-        button {
-            background-color: #00DDFF;
-            width: 100%;
-            color:black;
-            padding: 15px;
-            margin: 10px 0px;
-            border: none;
-            cursor: pointer;
-        }
-
-        input[type=text], input[type=password] {
-            width: 100%;
-            margin: 8px 0;
-            padding: 12px 20px;
-            display: inline-block;
-            border: 2px solid #ebf6f5;
-            box-sizing: border-box;
-        }
-
-        .container {
-            padding: 55px;
-            background-color: #5cbdb9;
-        }
-        .card {
-            margin-top: 10px;
-            margin: 0 auto;
-            float: none;
-            padding: 100px;
-            text-align: center;
-            background-color: #CBEFFB;
-        }
-
-        h1 {
-            text-align: center;
-            font-family: 'Trebuchet MS', sans-serif;}
-
-        h4 {
-            font-family: 'Trebuchet MS', sans-serif;}
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta http-equiv="X-UA-Compatible" content="IE=edge">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Bank Admin Login Page</title>-->
+<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">-->
+<!--    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>-->
+<!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>-->
 
 
 
-        .imp img{
-            max-width: 55px;
-            float: left;
-            margin: 0 10px 0 0;
-        }
-    </style>
+    <!DOCTYPE html>
+    <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Login page</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+        <style>
+            form {
+                background-image: url("../static/images/loginbg.jpg");
+            }
+            #logo{
+                width:70px;
+                max-height: 70px;
+            }
+            img{
+                width:600px;
+                max-height: 300px;
+            }
+        </style>
 
-</head>
-<body>
-<div class="container-fluid">
-    <form name="myform" id="frm" method="post">
-        <div class="imp justify-content-center d-flex">
-            <h1 class="ms-3 text-dark bg-info-subtle rounded-0"><img src="/images/mainlogo.jpg"/>Rathan Bank</h1>
+            <script>
+                $(document).ready(()=>{
+                    $("#submit").click(()=> {
+                        $.post('http://localhost:8085/signin',{
+                            uname : $("#username").val(),
+                            pass : $("#password").val()
+                        }, function(response) {
+                            if(response=="Logged in successfully"){
+                                window.location.href="http://localhost:8085/web/dash";
+                            }
+                            else{
+                                alert(response);
+                            }
+                        });
+
+                    }); });
+            </script>
+
+<!--        <script>-->
+<!--            $(document).ready(()=>{-->
+<!--                $("#submit").click(()=>{-->
+<!--                    $.post('http://localhost:8085/signin',{-->
+<!--                        uname:$("#username").val(),-->
+<!--                        pass:$("#password").val()-->
+<!--                    }, function(response) {-->
+<!--                        if(response=="Successfully Logged In!!"){-->
+<!--                            alert(response);-->
+<!--                            window.location.href="http://localhost:8085/web/dash";-->
+<!--                        }-->
+<!--                        else-->
+<!--                            alert(response);-->
+<!--                    });-->
+<!--                });-->
+<!--            });-->
+
+
+<!--        </script>-->
+    </head>
+
+<body class="bg-light">
+<div class="container">
+    <div class="row justify-content-center text-light bg-dark rounded-4 mt-3 col-lg-12 col-md-8 col-sm-12">
+        <h1 class="text-center" > <img id="logo" th:src="@{/images/originlogo.png}" class="p-2" /> ORIGIN BANK</h1>
+    </div>
+    <div class="row">
+        <div class=" col-lg-5 col-md-8 col-sm-12">
+            <form name="login" class="bg-dark rounded-4 mt-4 p-4 ">
+                <h2 class="fw-bold mb-2 text-uppercase text-light">Login</h2>
+                <p class="text-white-50 mb-2">Please enter your User Name and password</p>
+                <div class="form group">
+                    <label class="text-light">User Name <span id="errid"></span></label>
+                    <input type="text" id="username" name="username" class="form-control" />
+                </div>
+                <div class="form group mt-2">
+                    <label class="text-light">Password <span id="errpassword"></span></label>
+                    <input type="password" id="password" name="password" class="form-control" />
+                </div>
+                <div class="mt-2 p-2 text-light" >
+                    <input type="radio" id="admin" name="role" value="admin">
+                    <label for="admin">Admin</label>
+                    <input type="radio" id="bank" name="role" value="bankOfficial">
+                    <label for="bank">Bank Official</label>
+                </div>
+                <div class="mt-2 row justify-content-around">
+                    <p class="mb-1 pb-lg-1"><a class="text-white-50" href="#!">Forgot password?</a></p>
+                    <div class="mt-2 p-3 row justify-content-between">
+                        <button class="col-3 btn btn-outline-success" id="submit" type="button">
+                            <i class="bi bi-box-arrow-in-right"></i>
+                        </button>
+                        <button class="col-3 btn btn-outline-info" type="reset">
+                            <i class="bi bi-x-circle-fill"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </form>
         </div>
-        <div class="row mt-4">
-            <div class="col-lg-5 ">
-                <div class="card rounded-4">
-                    <h4 class="card-title text-center" >BANK ADMIN LOGIN PAGE</h4>
-                    <div class="form-group">
-                        <label>Username</label>
-                        <input type="text" class="form-control" name="username" id="username"  placeholder="Enter Username">
+        <div class=" col-lg-7 col-md-8 col-sm-12 mt-3 rounded-4 ">
+            <div class="carousel slide rounded-4" data-bs-ride="carousel">
+
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img th:src="@{/images/caros2origin.png}" >
                     </div>
-                    <div class="form-group">
-                        <label>Password</label>
-                        <input type="password" class="form-control" name="password" id="password"  placeholder="Enter Password">
-                    </div>
-                    <div>
-                        <button type="button" class="btn-md" id="mybtn" onclick="validateform()" >Login</button>
-                    </div>
-                    <a href="loginofficial.html">Bank Official?</a>
                 </div>
             </div>
-            <div class="col-lg-6">
-                <div id = "carouseldemo" class = "carousel slide" data-bs-ride = "carousel">
-                    <br>
-
-                    <div class = "carousel-inner">
-                        <div class = "carousel-item active">
-                            <img src = "/images/caros1.jpg" alt = "image1" class = "d-block" style = "width:1000px; height:240px;">
-                        </div>
-                        <div class = "carousel-item">
-                            <img src = "/images/caros2.jpg" alt = "image2" class = "d-block" style = "width:100%; height:240px;">
-                        </div>
-                        <div class = "carousel-item">
-                            <img src = "/images/caros3.jpg" alt = "image3" class = "d-block" style = "width:100%; height:240px;">
-                        </div>
-                        <div class = "carousel-item">
-                            <img src = "/images/caros4.jpg" alt = "image4" class = "d-block" style = "width:100%; height: 240px;">
-                        </div>
-                    </div>
-
-                    <button class = "carousel-control-prev" type = "button" data-bs-target = "#carouseldemo" data-bs-slide = "prev">
-                        <span class="carousel-control-prev-icon"></span>
-                    </button>
-                    <button class = "carousel-control-next" type = "button" data-bs-target = "#carouseldemo" data-bs-slide = "next">
-                        <span class = "carousel-control-next-icon"></span>
-                    </button>
-                </div>
-                <div class=" mt-4">
-
-                    <marquee width="100%" direction="up" bgcolor="#ccffffF" class=" p-2 rounded-3 text-dark">  
-
-                        Rathan Bank operates as a full service bank!!<br> The Company offers banking products and services such as savings accounts,<br>
-                        debit and credit cards,<br> business and personal loans, mortgages, cash management, line of credit, online banking, and e-statements.
-                        Rathan Bank operates as a full service bank!!<br> The Company offers banking products and services such as savings accounts,<br>
-                        debit and credit cards,<br> business and personal loans, mortgages, cash management, line of credit, online banking, and e-statements.
-                    </marquee>
-                </div>
-
-            </div>
-
+            <marquee width="100%" behavior="scroll" direction="up" bgcolor="#00004F" class="mt-3 p-2 rounded-3 text-light">
+                Origin Bank operates as a full service bank!!<br> The Company offers banking products and services such as savings accounts,<br>
+                debit and credit cards,<br> business and personal loans, mortgages, cash management, line of credit, online banking, and e-statements.
+            </marquee>
         </div>
 
-</div>
-</div>
-
-</form>
+    </div>
 </div>
 </body>
 </html>

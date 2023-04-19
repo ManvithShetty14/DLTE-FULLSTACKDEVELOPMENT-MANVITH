@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Loan_scheme {
+public class LoanScheme {
     private Integer loanSchemeId;
     private String loanSchemeType;
     private String loanSchemeName;

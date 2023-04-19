@@ -5,6 +5,9 @@ import java.util.List;
 public interface BankOperations {
     public Role loginByName(String uname);
     public void failedAttempts(int id);
-    public String insertion(Loan_scheme loan_scheme);
-    public List<Loan_scheme> listAllLoan();
+    public String insertLoan(LoanScheme loan_scheme);
+    public List<LoanScheme> listAllLoan();
+    public void updateAttempts(String username);
+    public void updateStatus(String username);
+    public void loginSuccess(String username);
 }

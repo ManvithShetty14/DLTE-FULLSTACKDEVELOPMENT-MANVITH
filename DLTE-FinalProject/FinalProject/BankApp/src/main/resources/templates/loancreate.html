@@ -42,7 +42,7 @@
 
                      },
                      error:()=>{
-                         alert("error")
+                         alert("LOAN CREATION FAILED!!")
                      }
                  });
              })
@@ -78,9 +78,13 @@
             background-repeat: no-repeat;
             background-size: cover;
         }
-        .back{
-            width: 70px;
+
+        .backbutton {
+            border: 2px solid black;
+            width: 100px;
+            height: 40px;
         }
+
         .imp img{
             max-width: 55px;
             float: left;
@@ -88,13 +92,16 @@
             height: 40px;
         }
 
+        .createbutton {
+            border: 2px solid black;
+            width: 100px;
+            height: 40px;
+        }
+
     </style>
 </head>
 <body>
 <nav>
-    <div class="me-1">
-        <li><button type="button" id="backbtn" class=" back bg-danger">Back</button></li>
-    </div>
     <div class="imp heading">
         <h4><img src="/images/mainlogo.jpg"/>Rathan Bank</h4>
     </div>
@@ -107,28 +114,28 @@
         <!-- Loan type input -->
         <div class="form-outline mb-4">
             <label class="form-label"><b>Loan Type</b></label>
-            <input type="text" id="loanType" name="loanType" class="form-control" />
+            <input type="text" id="loanType" name="loanType" class="form-control" placeholder="Loan Type" />
 
         </div>
 
         <!-- Loan name input -->
         <div class="form-outline mb-4">
             <label class="form-label"><b>Loan Name</b></label>
-            <input type="text" id="loanName" name="loanName" class="form-control" />
+            <input type="text" id="loanName" name="loanName" class="form-control" placeholder="Loan Name"/>
 
         </div>
 
         <!-- Description input -->
         <div class="form-outline mb-4">
             <label class="form-label"><b>Loan Description</b></label>
-            <input type="text" id="loanDesc" name="loanDesc" class="form-control" />
+            <input type="text" id="loanDesc" name="loanDesc" class="form-control" placeholder="Loan Description"/>
 
         </div>
 
         <!-- Number input -->
         <div class="form-outline mb-4">
             <label class="form-label"><b>Loan ROI</b></label>
-            <input type="number" id="loanROI" name="loanROI" class="form-control" />
+            <input type="number" id="loanROI" name="loanROI" class="form-control" placeholder="Loan ROI"/>
 
         </div>
 
@@ -139,7 +146,9 @@
         </div>
 
         <!-- Submit button -->
-        <button type="button" class="btn btn-primary btn-block mb-4" id="createbtn">Create</button>
+       <p> <button type="button" class="createbutton btn btn-primary btn-block mb-4" id="createbtn">Create</button>
+        <button type="button" class="backbutton btn btn-danger btn-block mb-4" id="backbtn">Back</button></p>
+
     </div>
 </form>
 

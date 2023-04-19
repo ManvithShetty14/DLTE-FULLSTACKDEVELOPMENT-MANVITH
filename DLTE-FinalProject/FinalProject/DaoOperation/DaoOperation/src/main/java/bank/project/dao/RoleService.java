@@ -4,11 +4,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 //import org.springframework.security.core.userdetails.UserDetails;
 //import org.springframework.security.core.userdetails.UserDetailsService;
 //import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.sql.ResultSet;
@@ -18,36 +22,19 @@ import java.util.ResourceBundle;
 
 
 @Service
-public class RoleService implements BankOperations{
+public class RoleService implements BankOperations , UserDetailsService {
     ResourceBundle resourceBundle=ResourceBundle.getBundle("role");
     @Autowired
     private JdbcTemplate jdbcTemplate;
     private Logger logger= LoggerFactory.getLogger(Role.class);
 
-//    @Override
-//    public int getAttempts(int id){
-//        int attempt=jdbcTemplate.queryForObject("select failed_attempts from role where role_id=?",Integer.class,id);
-//       return attempt;
-//    }
-//
-//    @Override
-//    public  void setAttempts(int id){
-//
-//       jdbcTemplate.update("update role set failed_attempts=3 where role_id=?",id);
-//    }
-//
-//    public void reduceAttempts(int id){
-//        jdbcTemplate.update("update role set failed_attempts = failed_attempts-1 where role_id=?",id);
-//    }
-//
-//    public void updateStatus(){
-//        jdbcTemplate.update("update role set role_status='inactive' failed_attempts=0");
-//    }
 
+
+    //create a service for user login method
 @Override
     public Role loginByName(String name){
         try{
-            Role role=jdbcTemplate.queryForObject("select * from role where username=? ",new RoleMapper(),name);
+            Role role=jdbcTemplate.queryForObject("select * from role where username=? ",new Object[]{name}, new BeanPropertyRowMapper<>(Role.class));
             logger.warn(resourceBundle.getString("loginquery"));
             return role;
         }catch (DataAccessException e){
@@ -55,40 +42,57 @@ public class RoleService implements BankOperations{
             return null;
         }
 }
+ // method to update the failed_attempts row int the table
+    @Override
+    public void updateAttempts(String username) {
+        jdbcTemplate.update("update role set failed_attempts = failed_attempts+1 where username=?",username);
+    }
+  // method to update the role status to inactive
+    @Override
+    public void updateStatus(String username) {
+        jdbcTemplate.update("update role set role_status = 'inactive' where username = ?",username);
+    }
 
-//    public UserDetails loadByUsername(String name) throws UsernameNotFoundException{
-//        Role role=readOne(name);
-//        if (role==null){
-//            throw new UsernameNotFoundException(resourceBundle.getString("User not found"));
-//        }
-//        return role;
-//    }
+    // method to update the failed_attempts to 0
+    @Override
+    public void loginSuccess(String username) {
+        jdbcTemplate.update("update customer set failed_attempts = 0 where username = ?",username);
+    }
 
+
+    public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException{
+        Role role=loginByName(name);
+        if (role==null){
+            throw new UsernameNotFoundException(resourceBundle.getString("User not found"));
+        }
+        return role;
+    }
+
+    // service to update the failed attempt record on each login failure
     @Override
     public void failedAttempts(int id){
         jdbcTemplate.update("update role set failed_attempts=failed_attempts+1 where role_id=?",id);
         jdbcTemplate.update("update role set role_status='Inactive' where failed_attempts=3");
         logger.info(resourceBundle.getString("updatequery"));
+     }
 
-    }
-
-
+   // service to list all the loan available in the bank
     @Override
-    public List<Loan_scheme> listAllLoan(){
+    public List<LoanScheme> listAllLoan(){
     logger.info(resourceBundle.getString("loanlistquery"));
     return jdbcTemplate.query("select * from loan_scheme",new LoanMapper());
     }
 
+    // service to insert the newly available loan to the bank
     @Override
-    public String insertion(Loan_scheme loan_scheme){
-        logger.info(resourceBundle.getString("loancreatequery"));
-    jdbcTemplate.update("insert into loan_scheme values(loan_scheme_id_seq.NEXTVAL,?,?,?,?)",new Object[]{loan_scheme.getLoanSchemeType(),loan_scheme.getLoanSchemeName(),loan_scheme.getLoanSchemeDesc(),loan_scheme.getLoanSchemeROI()});
-
-    return "created";
+    public String insertLoan(LoanScheme loan_scheme){
+    logger.info(resourceBundle.getString("loancreatequery"));
+    String info=loan_scheme.getLoanSchemeName()+" has created";
+    jdbcTemplate.update("insert into loan_scheme values(loan_scheme_id_seq.NEXTVAL,?,?,?,?,LOCALTIMESTAMP(2))",new Object[]{loan_scheme.getLoanSchemeType(),loan_scheme.getLoanSchemeName(),loan_scheme.getLoanSchemeDesc(),loan_scheme.getLoanSchemeROI()});
+    return info;
     }
 
     class RoleMapper implements RowMapper<Role> {
-
         @Override
         public Role mapRow(ResultSet rs, int rowNum) throws SQLException {
             Role role=new Role();
@@ -104,11 +108,11 @@ public class RoleService implements BankOperations{
         }
     }
 
-    class LoanMapper implements  RowMapper<Loan_scheme> {
+    class LoanMapper implements  RowMapper<LoanScheme> {
 
         @Override
-        public Loan_scheme mapRow(ResultSet rs,int rowNum) throws SQLException{
-            Loan_scheme loan_scheme=new Loan_scheme();
+        public LoanScheme mapRow(ResultSet rs, int rowNum) throws SQLException{
+            LoanScheme loan_scheme=new LoanScheme();
             loan_scheme.setLoanSchemeId(rs.getInt("loan_scheme_id"));
             loan_scheme.setLoanSchemeType(rs.getString("loan_scheme_type"));
             loan_scheme.setLoanSchemeName(rs.getString("loan_scheme_name"));
@@ -118,5 +122,6 @@ public class RoleService implements BankOperations{
         }
 
     }
+
 }
 

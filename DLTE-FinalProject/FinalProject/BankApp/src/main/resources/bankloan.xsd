@@ -10,6 +10,7 @@
         <xsd:element name="loanSchemeName" type="xsd:string" />
         <xsd:element name="loanSchemeDesc" type="xsd:string" />
         <xsd:element name="loanSchemeROI" type="xsd:float"/>
+        <xsd:element name="loanSchemeRemarks" type="xsd:string"/>
     </xsd:sequence>
 </xsd:complexType>
 

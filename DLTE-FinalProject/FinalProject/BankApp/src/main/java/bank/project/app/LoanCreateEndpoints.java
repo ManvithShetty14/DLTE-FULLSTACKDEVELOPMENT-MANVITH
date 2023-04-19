@@ -1,5 +1,6 @@
 package bank.project.app;
-import bank.project.dao.Loan_scheme;
+import bank.project.dao.LoanScheme;
+import bank.project.dao.LoanScheme;
 import bank.project.dao.RoleService;
 import bankloansoapwebservice.web.bank.soap.CreateNewLoanRequest;
 import bankloansoapwebservice.web.bank.soap.CreateNewLoanResponse;
@@ -32,13 +33,13 @@ public class LoanCreateEndpoints {
     @ResponsePayload
     public CreateNewLoanResponse createNewLoanResponse(@RequestPayload CreateNewLoanRequest createNewLoanRequest){
         CreateNewLoanResponse createNewLoanResponse =new CreateNewLoanResponse();
-        Loan_scheme pojo=new Loan_scheme();
+        LoanScheme pojo=new LoanScheme();
         ServiceStatus serviceStatus=new ServiceStatus();
         logger.info("service has been considered.");
         // source,target
         BeanUtils.copyProperties(createNewLoanRequest.getBankloan(),pojo);
         logger.info("The table has received the request");
-        roleService.insertion(pojo);
+        roleService.insertLoan(pojo);
         logger.trace("Entity has inserted");
         serviceStatus.setStatus("Success");
         serviceStatus.setMessage("Object Inserted");

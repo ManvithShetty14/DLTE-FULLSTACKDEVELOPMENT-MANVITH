@@ -23,6 +23,10 @@ public class MvnController {
     public String loancreate() { return "loancreate";}
     @GetMapping("/customersearch")
     public String cust_search() { return "cust_search";}
+    @GetMapping("/approval")
+    public String approval() { return "approval";}
+    @GetMapping("/home")
+    public String homepage() { return "homepage";}
 
 
 }

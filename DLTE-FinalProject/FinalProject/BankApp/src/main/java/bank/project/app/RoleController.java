@@ -1,6 +1,6 @@
 package bank.project.app;
 
-import bank.project.dao.Loan_scheme;
+import bank.project.dao.LoanScheme;
 import bank.project.dao.Role;
 import bank.project.dao.RoleService;
 import org.slf4j.Logger;
@@ -21,6 +21,7 @@ public class RoleController {
     private RoleService roleService;
     private Logger logger = LoggerFactory.getLogger(RoleController.class);
 
+    // controller to user login method
     @PostMapping("/signin")
     public String authentication(@RequestParam("uname") String uname, @RequestParam("pass") String pass) {
         logger.info("values are entered:");
@@ -47,32 +48,26 @@ public class RoleController {
 
     }
 
-
+    //controller to list all the loan in the bank
     @GetMapping("/display")
-    public List<Loan_scheme> callLoanList() {
+    public List<LoanScheme> getLoanList() {
         logger.info(resourceBundle.getString("loanList"));
-        List<Loan_scheme> listloan = roleService.listAllLoan();
+        List<LoanScheme> listloan = roleService.listAllLoan();
         logger.info(resourceBundle.getString("listedLoan"));
         return listloan;
     }
 
+    //controller to create a new loan to the bank
     @PostMapping("/createloan")
-    public String adding(@RequestParam("loanType") String loanType,@RequestParam("loanName") String loanName,@RequestParam("loanDesc") String loanDesc,@RequestParam("loanROI") Float loanROI){
+    public String addNewLoan(@RequestParam("loanType") String loanType,@RequestParam("loanName") String loanName,@RequestParam("loanDesc") String loanDesc,@RequestParam("loanROI") Float loanROI){
         logger.info(resourceBundle.getString("loancreate"));
-        Loan_scheme loan_scheme=new Loan_scheme();
+        LoanScheme loan_scheme=new LoanScheme();
         loan_scheme.setLoanSchemeType(loanType);
         loan_scheme.setLoanSchemeName(loanName);
         loan_scheme.setLoanSchemeDesc(loanDesc);
         loan_scheme.setLoanSchemeROI(loanROI);
         logger.info(resourceBundle.getString("createloan"));
-        return roleService.insertion(loan_scheme);
+        return roleService.insertLoan(loan_scheme);
     }
-
-//    @GetMapping("/loanlist")
-//    public List<Loan_scheme> callList(){
-//        logger.info("Loans are listed");
-//        return roleService.listAll();
-//    }
-
 
 }
