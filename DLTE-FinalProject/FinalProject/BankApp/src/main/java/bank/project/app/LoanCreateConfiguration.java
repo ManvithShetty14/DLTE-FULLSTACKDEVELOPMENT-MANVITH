@@ -29,6 +29,7 @@ public class LoanCreateConfiguration  extends WsConfigurerAdapter {
 
     @Bean
     public XsdSchema bankLoanSchema(){
+
         return new SimpleXsdSchema(new ClassPathResource("bankloan.xsd"));
     }
 

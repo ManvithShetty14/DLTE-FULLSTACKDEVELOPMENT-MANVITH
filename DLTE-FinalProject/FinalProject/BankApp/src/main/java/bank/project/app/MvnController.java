@@ -28,5 +28,4 @@ public class MvnController {
     @GetMapping("/home")
     public String homepage() { return "homepage";}
 
-
 }

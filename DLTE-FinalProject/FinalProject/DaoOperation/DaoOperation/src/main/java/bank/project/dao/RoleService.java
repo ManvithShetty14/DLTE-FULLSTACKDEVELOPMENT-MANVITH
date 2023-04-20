@@ -23,58 +23,70 @@ import java.util.ResourceBundle;
 
 @Service
 public class RoleService implements BankOperations , UserDetailsService {
+    // resource bundle to retrieve the value using key from properties file
     ResourceBundle resourceBundle=ResourceBundle.getBundle("role");
     @Autowired
     private JdbcTemplate jdbcTemplate;
+    //declaring the loggers
     private Logger logger= LoggerFactory.getLogger(Role.class);
 
 
 
     //create a service for user login method
 @Override
-    public Role loginByName(String name){
-        try{
-            Role role=jdbcTemplate.queryForObject("select * from role where username=? ",new Object[]{name}, new BeanPropertyRowMapper<>(Role.class));
-            logger.warn(resourceBundle.getString("loginquery"));
-            return role;
-        }catch (DataAccessException e){
-            logger.info(resourceBundle.getString("loginexception"+e));
-            return null;
-        }
-}
- // method to update the failed_attempts row int the table
-    @Override
-    public void updateAttempts(String username) {
-        jdbcTemplate.update("update role set failed_attempts = failed_attempts+1 where username=?",username);
+    public Role loginByName(String name) {
+    try {
+        Role role = jdbcTemplate.queryForObject("select * from role where username=? ", new Object[]{name}, new BeanPropertyRowMapper<>(Role.class));
+        logger.warn(resourceBundle.getString("loginquery"));
+        return role;
+    } catch (DataAccessException e) {
+        logger.info(resourceBundle.getString("loginexception" + e));
+        return null;
     }
-  // method to update the role status to inactive
-    @Override
-    public void updateStatus(String username) {
-        jdbcTemplate.update("update role set role_status = 'inactive' where username = ?",username);
+}
+
+
+    public int getAttempts(int id) {
+        int attempts = jdbcTemplate.queryForObject("select failed_attempts from role where role_id=?",Integer.class,id);
+        logger.info("Returned Attempts");
+        return attempts;
     }
 
-    // method to update the failed_attempts to 0
-    @Override
-    public void loginSuccess(String username) {
-        jdbcTemplate.update("update customer set failed_attempts = 0 where username = ?",username);
+    //if two times wrong and third time correct
+//    public void decrementAttempts(int id) {
+//        jdbcTemplate.update("update CUSTOMER set ATTEMPTS = ATTEMPTS - 1 where CUSTOMER_ID=?",id);
+//        logger.info("Decreased the number of attempts");
+//        updateStatus();
+//
+//    }
+
+    public void setAttempts(int id) {
+        jdbcTemplate.update("update role set failed_attempts=3 where role_id=?",id);
+        logger.info("Set attempts to 3");
+    }
+
+    //to set attempt to 0 if user is inactive
+    public void updateStatus() {
+        jdbcTemplate.update("update role set role_status='Inactive' where failed_attempts=0");
+        logger.info("Status set to inactive");
+    }
+
+    public void incrementFailedAttempts(int id) {
+        //if three unsucessfull attempts customer account will be deactivated
+        jdbcTemplate.update("update role set failed_attempts = failed_attempts + 1 where role_id=?", id);
+        jdbcTemplate.update("update role set role_status='Inactive' where failed_attempts=3");
+
     }
 
 
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException{
         Role role=loginByName(name);
         if (role==null){
-            throw new UsernameNotFoundException(resourceBundle.getString("User not found"));
+            throw new UsernameNotFoundException(resourceBundle.getString("noUser"));
         }
         return role;
     }
 
-    // service to update the failed attempt record on each login failure
-    @Override
-    public void failedAttempts(int id){
-        jdbcTemplate.update("update role set failed_attempts=failed_attempts+1 where role_id=?",id);
-        jdbcTemplate.update("update role set role_status='Inactive' where failed_attempts=3");
-        logger.info(resourceBundle.getString("updatequery"));
-     }
 
    // service to list all the loan available in the bank
     @Override

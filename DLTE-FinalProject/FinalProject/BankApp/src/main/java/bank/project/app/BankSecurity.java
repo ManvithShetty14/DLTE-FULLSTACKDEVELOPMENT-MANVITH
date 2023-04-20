@@ -17,6 +17,12 @@ public class BankSecurity {
     RoleService roleService;
     AuthenticationManager authenticationManager;
 
+    @Autowired
+    LoginFailureHandler failureHandler;
+
+    @Autowired
+    LoginSuccessHandler successHandler;
+
     @Bean
     public PasswordEncoder passwordEncoder(){
         return NoOpPasswordEncoder.getInstance();
@@ -28,7 +34,7 @@ public class BankSecurity {
         httpSecurity.authorizeRequests((requests)->{
             requests.anyRequest().permitAll();
         });
-        httpSecurity.formLogin().loginPage("/web/login").usernameParameter("username").permitAll();
+        httpSecurity.formLogin().loginPage("/web/login").usernameParameter("username").failureHandler(failureHandler).successHandler(successHandler).permitAll();
         httpSecurity.logout().permitAll();
         httpSecurity.csrf().disable();
 

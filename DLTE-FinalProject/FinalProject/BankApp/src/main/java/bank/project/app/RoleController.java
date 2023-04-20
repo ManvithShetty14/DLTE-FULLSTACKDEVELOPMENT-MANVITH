@@ -48,7 +48,7 @@ public class RoleController {
 
     }
 
-    //controller to list all the loan in the bank
+    //controller to list all the loan scheme in the bank
     @GetMapping("/display")
     public List<LoanScheme> getLoanList() {
         logger.info(resourceBundle.getString("loanList"));

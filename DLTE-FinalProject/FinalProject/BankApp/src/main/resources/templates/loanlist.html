@@ -14,9 +14,9 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<!--    script validation to display loan scheme available in the bank-->
     <script type="text/javascript">
-
-            function fetchLoan() {
+             function fetchLoan() {
                 $.get("/display", function (data) {
                     // alert("hgsfdgw")
                     loanList = data;
@@ -29,11 +29,10 @@
                 });
             }
             $(document).ready(()=> {
-
                 fetchLoan();
             });
     </script>
-
+<!--   script to navigate back to home page -->
     <script>
         $(document).ready(()=> {
             $("#backbtn").click(() => {
@@ -42,6 +41,7 @@
             );
         });
     </script>
+<!--    script to navigate to loan creation page-->
     <script>
         $(document).ready(()=> {
             $("#loanbtn").click(() => {
@@ -53,9 +53,30 @@
 </head>
 
 <body>
-<div class="row justify-content-center text-light bg-dark rounded-4 mt-3 col-lg-12 col-md-8 col-sm-12">
-    <h1 class="text-center" > <img id="logo" th:src="@{/images/originlogo.png}" class="p-2" height="70px" /> ORIGIN BANK</h1>
-</div>
+<!-- the main heading and logo of the bank-->
+<nav class="navbar navbar-expand-lg">
+    <!--    describe the nav bar like the background color and corner rounded-->
+    <div class="container-fluid bg-dark rounded-4">
+        <a class="navbar-brand " href="#">
+            <!--            create the bank logo and name at the top-->
+            <div class="row justify-content-center text-light bg-dark rounded-4 mt-3 col-lg-12 col-md-8 col-sm-12">
+                <h1 class="text-center" > <img id="logo" th:src="@{/images/originlogo.png}" class="p-2 rounded-4" width="70px" height="70px" /> ORIGIN BANK</h1>
+            </div>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#union">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="union">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <!--                logout button-->
+                <li class="nav-item text-center mt-2">
+                    <a th:href="@{/logout}"><button type="submit" class="btn btn-outline-danger rounded-4 me-2"><i class="bi bi-box-arrow-left"></i>Logout</button></a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
 <style>
     button {
         background-color: skyblue;
@@ -64,11 +85,13 @@
         border-radius: 5px;
         cursor: pointer;
     }
+    /*styling the main body*/
     body {
         background-color: lavender;
         background-repeat: no-repeat;
         background-size: cover;
     }
+    /*button specifications*/
     .backbutton {
         border: 2px solid black;
         width: 100px;
@@ -79,22 +102,25 @@
         width: 100px;
         height: 40px;
     }
-
 </style>
+
 <img src="aaradhya logo.jpg" width="5px" height="5px">
 <div class="container">
+<!--    the main heading of page of what the page does-->
     <div class="row justify-content-center text-dark bg-success rounded-4 mt-3 col-lg-12 col-md-8 col-sm-12">
         <h1 class="text-center">Loan Scheme Available in Bank</h1>
     </div>
     <div class="row justify-content-around">
+
         <div class="col-lg-12 col-md-8 col-sm-12 card bg-success rounded-4 p-2 mt-2">
             <marquee><h4>Origin Bank provides the following Loans!</h4></marquee>
         </div>
-
     </div>
 
     <div class="table-responsive mt-4 rounded-4">
+<!--        display in the table format-->
         <table class="table text-dark table-striped p-2 shadow-lg text-nowrap" cellspacing="1px" cellpadding="1px">
+<!--            the heading of the table of each column -->
            <thead>
             <tr class="bg-success-subtle">
                 <th>Loan ID</th>
@@ -104,6 +130,7 @@
                 <th>Loan ROI</th>
             </tr>
            </thead>
+<!--            we get the details for the body through the script part-->
             <tbody>
 
             </tbody>
@@ -113,7 +140,7 @@
     </div>
 
     <br>
-
+<!--     buttons to create loan and go back to home page-->
     <p> <button type="button" class="loanbutton btn btn-primary btn-block mb-4" id="loanbtn">Create</button>
         <button type="button" class="backbutton btn btn-danger btn-block mb-4" id="backbtn">Back</button></p>
 </div>

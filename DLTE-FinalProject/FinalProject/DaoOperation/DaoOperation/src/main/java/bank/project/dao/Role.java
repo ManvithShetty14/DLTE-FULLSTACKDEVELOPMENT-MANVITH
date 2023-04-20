@@ -11,6 +11,7 @@ import java.util.Collection;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+//POJO class for role
 public class Role implements UserDetails {
         private Integer roleId;
         private String roleName;
