@@ -11,6 +11,46 @@
     <title>Document</title>
 <!--    script for the creation of the loan in bank-->
     <script>
+        $(document).ready(function () {
+//jQuery event when apply loan button is clicked
+            $("#createbtn").click(()=>{
+//Storing entered details into script variables.
+                var loanType = $("input[name=loanType]").val()
+                var loanName = $("input[name=loanName]").val()
+                var loanDesc = $("input[name=loanDesc]").val()
+                var loanROI = $("input[name=loanROI]").val()
+
+
+//Validation
+                $("#error").remove()
+                // $("#success").remove()
+// $("#responseMessage").remove()
+                try{
+                    if(loanType===""|| loanName === "" || loanDesc===""|| loanROI === ""){
+                        throw "All fields are mandatory"
+                    }
+                    else if(((/^[^\d]*$/).test(loanROI))){
+                        throw "ROI should be in numbers"
+                    }
+                }
+                catch(errmsg){
+                    $("#responseMessage").append("<div class='row justify-content-center bg-danger-subtle text-danger rounded-4 p-2 ms-3 me-3 mb-1' id='error'><p class='text-center'>"+errmsg+"</p></div>")
+                }
+
+//ajax get method for applying loan
+                $.post("http://localhost:8085/web/loan", {
+                    ltype: loanType,
+                    lname: loanName,
+                    ldesc: loanDesc,
+                    lroi : loanROI,
+                },function (data) {
+                    $("#error").remove()
+                    $("#responseMessage").append("<div class='row justify-content-center bg-success-subtle text-success rounded-4 p-2 ms-3 me-3 mb-1' id='success'><p class='text-center'>"+data+"</p></div>")
+                })
+            })
+        })
+        </script>
+    <script>
           $(document).ready(()=>{
               // on click of create button, perform below operation
              $("#createbtn").click(()=>{
@@ -49,11 +89,10 @@
                      },
                      // on some error it enters below
                      error:()=>{
-                         alert("LOAN CREATION FAILED!!")
+                             alert("LOAN CREATION FAILED!!")
                      }
                  });
              })
-
           })
     </script>
 <!--    on click of back button go back to the loan scheme page-->
@@ -139,21 +178,20 @@
         <!-- Loan type input -->
         <div class="form-outline mb-4">
             <label class=" required form-label"><b>Loan Type</b></label>
-            <input type="text" id="loanType" name="loanType" class="form-control" placeholder="Loan Type" />
-
+            <input type="text" id="loanType" name="loanType" class="form-control" placeholder="Loan Type" required />
         </div>
 
         <!-- Loan name input -->
         <div class="form-outline mb-4">
             <label class=" required form-label"><b>Loan Name</b></label>
-            <input type="text" id="loanName" name="loanName" class="form-control" placeholder="Loan Name"/>
+            <input type="text" id="loanName" name="loanName" class="form-control" placeholder="Loan Name" required/>
 
         </div>
 
         <!--Loan Description input -->
         <div class="form-outline mb-4">
             <label class=" required form-label"><b>Loan Description</b></label>
-            <input type="text" id="loanDesc" name="loanDesc" class="form-control" placeholder="Loan Description"/>
+            <input type="text" id="loanDesc" name="loanDesc" class="form-control" placeholder="Loan Description" required/>
 
         </div>
 
@@ -164,10 +202,8 @@
 
         </div>
 
-        <!-- Confirmation Checkbox -->
-        <div class="form-check d-flex justify-content-center mb-4">
-            <input class="form-check-input me-2" type="checkbox" checked />
-            <label class="form-check-label" >Confirm you want to create a new Loan?</label>
+        <div id="responseMessage">
+
         </div>
 
         <!-- Submit button -->

@@ -32,12 +32,17 @@ public class BankSecurity {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 
         httpSecurity.authorizeRequests((requests)->{
-            requests.anyRequest().permitAll();
+            //grant access to the all users the login page
+            requests.antMatchers("/resources/static/images/**").permitAll();
+            requests.antMatchers("/web/login").permitAll();
+            //grant access to the user only when the login is authenticated
+            requests.antMatchers("/web/dash").authenticated();
+            requests.antMatchers("/web/loan").authenticated();
+            requests.antMatchers("/web/createloan").authenticated();
         });
         httpSecurity.formLogin().loginPage("/web/login").usernameParameter("username").failureHandler(failureHandler).successHandler(successHandler).permitAll();
         httpSecurity.logout().permitAll();
         httpSecurity.csrf().disable();
-
 
         AuthenticationManagerBuilder builder=httpSecurity.getSharedObject(AuthenticationManagerBuilder.class);
         builder.userDetailsService(roleService);

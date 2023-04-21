@@ -1,7 +1,9 @@
 //package bank.project.app;
 //
+//import bank.project.dao.LoanScheme;
 //import bank.project.dao.Role;
 //import bank.project.dao.RoleService;
+//import org.junit.jupiter.api.DisplayName;
 //import org.junit.jupiter.api.Test;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.boot.test.autoconfigure.data.jdbc.DataJdbcTest;
@@ -28,19 +30,22 @@
 ////    @Test
 ////    void contextLoads() {
 ////    }
+//@Autowired
+//RoleService roleService;
 //
 //    @Test
-//    public void listByUsername(){
-//        List<Role> role= (List<Role>) roleService.loginByName("Manish");
-//        assertTrue(role.isEmpty());
+//    @DisplayName("Test findAll")
+//    void testFindAll() {
+//        // Setup our mock repository
+//        LoanScheme loan1 = new LoanScheme(160,"Home Loan","GharGhar Loan","Need for home to everyone.", (float) 5.8);
+//        LoanScheme loan2 = new LoanScheme(162,"Education Loan","Shiksha Loan","Need for education to everyone.", (float) 7.8);
+//        doReturn(Arrays.asList(widget1, widget2)).when(repository).findAll();
 //
-//    }
+//        // Execute the service call
+//        List<Widget> widgets = service.findAll();
 //
-//    @Test
-//     public void getByUsername(){
-//        String uname="mainsh";
-//        when(roleService.loginByName(uname)).thenReturn((Role) Stream.of(new Role(102,"Bank Admin","Ensure qualitative services to bank customers.","Inactive",103,"gourav","gourav123",0)).collect(Collectors.toList()));
-//        assertEquals(1,roleService.)
+//        // Assert the response
+//        Assertions.assertEquals(2, widgets.size(), "findAll should return 2 widgets");
 //    }
 //
 //}

@@ -21,33 +21,6 @@ public class RoleController {
     private RoleService roleService;
     private Logger logger = LoggerFactory.getLogger(RoleController.class);
 
-    // controller to user login method
-    @PostMapping("/signin")
-    public String authentication(@RequestParam("uname") String uname, @RequestParam("pass") String pass) {
-        logger.info("values are entered:");
-        Role role = roleService.loginByName(uname);
-        if (role == null) {
-            logger.info(resourceBundle.getString("userNotExist"));
-            return resourceBundle.getString("userNotExist");
-        } else {
-            logger.info(role.getRoleStatus());
-            if (role.getRoleStatus().equalsIgnoreCase("Inactive")) {
-                logger.info(resourceBundle.getString("deactivateAccount"));
-                return resourceBundle.getString("deactivateAccount");
-            }
-            if (!pass.equals(role.getPassword())) {
-                roleService.failedAttempts(role.getRoleId());
-                logger.info(resourceBundle.getString("passwordWrong"));
-                return resourceBundle.getString("passwordWrong");
-            }
-            else {
-                logger.info(resourceBundle.getString("loginSuccess"));
-                return resourceBundle.getString("loginSuccess");
-            }
-        }
-
-    }
-
     //controller to list all the loan scheme in the bank
     @GetMapping("/display")
     public List<LoanScheme> getLoanList() {

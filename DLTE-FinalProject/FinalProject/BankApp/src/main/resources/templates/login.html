@@ -9,6 +9,7 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+
         <style>
             form {
                 background-image: url("../static/images/loginbg.jpg");
@@ -27,33 +28,50 @@
              .required:after {
                  content:" *";
                  color: red;
-             }
 
+                 }
         </style>
-
 <!--        script to validate the login function-->
-            <script>
-                // $(document).ready(()=>{
-                //     // on clicking the button perform the below operation
-                //     $("#submit").click(()=> {
-                //         $.post('http://localhost:8085/signin',{
-                //             uname : $("#username").val(),
-                //             pass : $("#password").val()
-                //         },
-                //             // on login successful ,redirect to next page
-                //             function(response) {
-                //             if(response=="Logged in successfully"){
-                //                 window.location.href="http://localhost:8085/web/dash";
-                //             }
-                //             else
-                //                 // else respond with the error message
-                //                 {
-                //                 alert(response);
-                //             }
-                //         });
-                //
-                //     }); });
-            </script>
+        <script>
+            $(document).ready(()=> {
+                $('#username').on('input', function () {
+                    console.log("Entered the valid username");
+                    var username = $(this).val();
+                    var validUserName = /^[a-z]{3,}$/;
+                    if (username.length === 0) {
+                        $('.user').addClass('invalid-msg').text("username is required!!");
+                        $(this).addClass('invalid-input').removeClass('valid-input');
+
+                    } else if (!validUserName.test(username)) {
+                        $('.user').addClass('invalid-msg').text('username must atleast 4 characters!!');
+                        $(this).addClass('invalid-input').removeClass('valid-input');
+
+                    } else {
+                        $('.user').empty();
+                        $(this).addClass('valid-input').removeClass('invalid-input');
+                    }
+                });
+                $('#password').on('input', function () {
+                    console.log("Entered the valid password");
+                    var password = $(this).val();
+                    var validPassword = /^[a-z]{4,}[0-9]{3}$/;
+                    if (password.length === 0) {
+                        $('.password').addClass('invalid-msg').text("username is required!!");
+                        $(this).addClass('invalid-input').removeClass('valid-input');
+
+                    } else if (!validPassword.test(password)) {
+                        $('.password').addClass('invalid-msg').text('password must contain atleast 4 characters and 3 numbers!!');
+                        $(this).addClass('invalid-input').removeClass('valid-input');
+
+                    } else {
+                        $('.password').empty();
+                        $(this).addClass('valid-input').removeClass('invalid-input');
+                    }
+                });
+            })
+
+
+        </script>
     </head>
 
 <body class="bg-light">
@@ -67,18 +85,20 @@
 <!--        consider the first column-->
         <div class=" col-lg-5 col-md-8 col-sm-12">
 <!--            making of the login form-->
-            <form name="login" th:action="@{/web/login}" method="post" class="bg-dark rounded-4 mt-4 p-4 ">
+            <form name="login" th:action="@{/web/login}" onsubmit="return validateForm()" method="post" id="validation" class="bg-dark rounded-4 mt-4 p-4 ">
                 <h2 class="fw-bold mb-2 text-uppercase text-light">Login</h2>
                 <p class="text-white-50 mb-2">Please enter your User Name and password</p>
 <!--                take username as input from the user-->
                 <div class="form group">
                     <label class="required text-light">User Name <span id="errid"></span></label>
-                    <input type="text" id="username" name="username" class="form-control" />
+                    <input type="text" id="username" name="username" class="form-control" required/>
+                    <p class="user text-danger"></p>
                 </div>
 <!--                take the password from the user-->
                 <div class="form group mt-2">
                     <label class="required text-light">Password <span id="errpassword"></span></label>
-                    <input type="password" id="password" name="password" class="form-control" />
+                    <input type="password" id="password" name="password" class="form-control" required/>
+                    <p class="password text-danger"></p>
                 </div>
 <!--                asking user whether he is a bank admin or official -->
                 <div class="mt-2 p-2 text-light" >
@@ -98,8 +118,7 @@
                         <button class="col-3 btn btn-outline-success" id="submit" type="submit">
                             <i class="bi bi-box-arrow-in-right"></i>
                         </button>
-                        <button class="col-3 btn btn-outline-info" type="reset">
-                            <i class="bi bi-x-circle-fill"></i>
+                        <button class="col-3 btn btn-outline-info" type="reset">RESET
                         </button>
                     </div>
                 </div>

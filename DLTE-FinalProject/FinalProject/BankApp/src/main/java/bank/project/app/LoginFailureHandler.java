@@ -24,32 +24,41 @@ public class LoginFailureHandler extends SimpleUrlAuthenticationFailureHandler {
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         String userName = request.getParameter("username");
-        String passWord = request.getParameter("password");
+       // String passWord = request.getParameter("password");
+        // create the object for the login user
         Role role = roleService.loginByName(userName);
+        //if username not exist in table
         if (role == null) {
-            exception = new LockedException(resourceBundle.getString("db_user"));
-            super.setDefaultFailureUrl("/web/login?error=" + resourceBundle.getString("db_user"));
+            exception = new LockedException(resourceBundle.getString("noUser"));
+            super.setDefaultFailureUrl("/web/login?error=" + resourceBundle.getString("noUser"));
         } else {
+            //if the role status is inactive
             if (role.getRoleStatus().equalsIgnoreCase("inactive")) {
-                logger.info(resourceBundle.getString("db_unsuccessfull"));
-                exception = new LockedException(resourceBundle.getString("db_unsuccessfull"));
-                super.setDefaultFailureUrl("/web/login?error=" + resourceBundle.getString("db_unsuccessfull"));
+                logger.info(resourceBundle.getString("accDeactivate"));
+                exception = new LockedException(resourceBundle.getString("accDeactivate"));
+                super.setDefaultFailureUrl("/web/login?error=" + resourceBundle.getString("accDeactivate"));
             } else {
+                // increment the failed attempts
                 roleService.incrementFailedAttempts(role.getRoleId());
                 int attempts = roleService.getAttempts(role.getRoleId());
+                //if failed attempts is 1, user has 2 chances left
                 if (attempts == 1) {
-                    logger.info(resourceBundle.getString("db_incorrect_pw") + resourceBundle.getString("attempt2"));
-                    exception = new LockedException(resourceBundle.getString("attempt2") + resourceBundle.getString("db_incorrect_pw"));
-                    super.setDefaultFailureUrl("/web/login?error=" + resourceBundle.getString("db_incorrect_pw") + resourceBundle.getString("attempt2"));
-                } else if (attempts == 2) {
-                    logger.info(resourceBundle.getString("db_incorrect_pw") + resourceBundle.getString("attempt1"));
-                    exception = new LockedException(resourceBundle.getString("attempt1") + resourceBundle.getString("db_incorrect_pw"));
-                    super.setDefaultFailureUrl("/web/login?error=" + resourceBundle.getString("db_incorrect_pw") + resourceBundle.getString("attempt1"));
-                } else {
-                    logger.info(resourceBundle.getString("db_unsuccessfull"));
-                    exception = new LockedException(resourceBundle.getString("db_unsuccessfull"));
+                    logger.info(resourceBundle.getString("incorrect_pw") + resourceBundle.getString("attempt2"));
+                    exception = new LockedException(resourceBundle.getString("attempt2") + resourceBundle.getString("incorrect_pw"));
+                    super.setDefaultFailureUrl("/web/login?error=" + resourceBundle.getString("incorrect_pw") + resourceBundle.getString("attempt2"));
+                }
+                //if failed attempts is 2,user has 1 chances left
+                else if (attempts == 2) {
+                    logger.info(resourceBundle.getString("incorrect_pw") + resourceBundle.getString("attempt1"));
+                    exception = new LockedException(resourceBundle.getString("attempt1") + resourceBundle.getString("incorrect_pw"));
+                    super.setDefaultFailureUrl("/web/login?error=" + resourceBundle.getString("incorrect_pw") + resourceBundle.getString("attempt1"));
+                }
+                //On third wrong attempt , user is deactivated
+                else {
+                    logger.info(resourceBundle.getString("accDeactivate"));
+                    exception = new LockedException(resourceBundle.getString("accDeactivate"));
                     roleService.updateStatus();
-                    super.setDefaultFailureUrl("/web/login?error=" + resourceBundle.getString("db_unsuccessfull"));
+                    super.setDefaultFailureUrl("/web/login?error=" + resourceBundle.getString("accDeactivate"));
                 }
             }
         }

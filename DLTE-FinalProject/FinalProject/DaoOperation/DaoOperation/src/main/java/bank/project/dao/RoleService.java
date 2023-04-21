@@ -7,9 +7,6 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-//import org.springframework.security.core.userdetails.UserDetails;
-//import org.springframework.security.core.userdetails.UserDetailsService;
-//import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -40,55 +37,54 @@ public class RoleService implements BankOperations , UserDetailsService {
         logger.warn(resourceBundle.getString("loginquery"));
         return role;
     } catch (DataAccessException e) {
-        logger.info(resourceBundle.getString("loginexception" + e));
+        logger.info(resourceBundle.getString("loginexception")+e);
         return null;
     }
 }
 
-
+  //method to get the count of failed attempts
     public int getAttempts(int id) {
         int attempts = jdbcTemplate.queryForObject("select failed_attempts from role where role_id=?",Integer.class,id);
         logger.info("Returned Attempts");
         return attempts;
     }
 
-    //if two times wrong and third time correct
-//    public void decrementAttempts(int id) {
-//        jdbcTemplate.update("update CUSTOMER set ATTEMPTS = ATTEMPTS - 1 where CUSTOMER_ID=?",id);
-//        logger.info("Decreased the number of attempts");
-//        updateStatus();
-//
-//    }
-
+   //method to keep the failed attempts count 0
     public void setAttempts(int id) {
-        jdbcTemplate.update("update role set failed_attempts=3 where role_id=?",id);
-        logger.info("Set attempts to 3");
+        jdbcTemplate.update("update role set failed_attempts=0 where role_id=?",id);
+        logger.info("Set attempts to 0");
     }
 
-    //to set attempt to 0 if user is inactive
+    //to set status to inactive if failed attempts count is 3
     public void updateStatus() {
-        jdbcTemplate.update("update role set role_status='Inactive' where failed_attempts=0");
+        jdbcTemplate.update("update role set role_status='Inactive' where failed_attempts=3");
         logger.info("Status set to inactive");
     }
 
+    //method to increment the failed attempts
     public void incrementFailedAttempts(int id) {
-        //if three unsucessfull attempts customer account will be deactivated
+        //if three unsucessfull attempts role account will be deactivated
         jdbcTemplate.update("update role set failed_attempts = failed_attempts + 1 where role_id=?", id);
         jdbcTemplate.update("update role set role_status='Inactive' where failed_attempts=3");
 
     }
 
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        logger.info("Entered loadByUsername() method");
+        Role role = loginByName(username);
 
-    public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException{
-        Role role=loginByName(name);
-        if (role==null){
+        if (role == null){
             throw new UsernameNotFoundException(resourceBundle.getString("noUser"));
+        }
+        logger.info("Leaving loadByUsername() method");
+        if (role.getRoleStatus().equalsIgnoreCase("inactive")){
+            throw new UsernameNotFoundException(resourceBundle.getString("accDeactivated"));
         }
         return role;
     }
 
 
-   // service to list all the loan available in the bank
+   // service to display all the loan scheme available in the bank
     @Override
     public List<LoanScheme> listAllLoan(){
     logger.info(resourceBundle.getString("loanlistquery"));

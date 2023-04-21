@@ -37,19 +37,25 @@ class DaoApplicationTests {
         LoanScheme vehicleLoan=new LoanScheme(180,"Vehicle Loan","Savaari Yojana","Buy the much needed dream vehicle.", (float) 7.8);
         LoanScheme educationLoan=new LoanScheme(185,"Education Loan","Shiksha Yojana","Need to provide quality education to everyone.", (float) 6.8);
         LoanScheme personalLoan=new LoanScheme(190,"Personal Loan","Jeevan Yojana","You can use the funds from this loan for any legitimate financial need.", (float) 8.2);
-        List<LoanScheme> tempList = Stream.of(homeLoan,vehicleLoan).collect(Collectors.toList());
+        List<LoanScheme> tempList = Stream.of(homeLoan,vehicleLoan,educationLoan,personalLoan).collect(Collectors.toList());
         when(jdbcTemplate.query(eq("select * from loan_scheme"),any(RowMapper.class))).thenReturn(tempList);
         assertNotEquals(0, roleService.listAllLoan().indexOf(vehicleLoan));
+        assertEquals(3,roleService.listAllLoan().indexOf(personalLoan));
     }
 
     // junit testing on the method loginByName()
     @Test
     public void testLoginByName(){
         Role bankAdmin = new Role(102,"Bank Admin","Ensure qualitative services to bank customers.","Active",201,"amruth","amruth123",1);
+        Role bankOfficial = new Role(104,"Bank Official","Lending activities can be directly performed by the bank or indirectly through capital markets.","Active",203,"nishith","nishith123",2);
         String username="amruth";
+        String uname="nishith";
         when(jdbcTemplate.queryForObject(eq("select * from role where username=? "), eq(new Object[]{username}), any(RowMapper.class))).thenReturn(bankAdmin);
         Role admin=roleService.loginByName(username);
         assertSame(bankAdmin,admin);
+        when(jdbcTemplate.queryForObject(eq("select * from role where username=? "), eq(new Object[]{uname}), any(RowMapper.class))).thenReturn(bankOfficial);
+        Role bank_admin=roleService.loginByName(username);
+        assertNotSame(bankOfficial,bank_admin);
     }
 
     // junit testing on the service insertLoan()
@@ -61,6 +67,7 @@ class DaoApplicationTests {
                 .thenReturn(1);
         String data=roleService.insertLoan(homeLoan);
         assertEquals("Ghar Yojana has created",data);
+        assertNotEquals("Vaahan Yojana has created",data);
     }
 
 }

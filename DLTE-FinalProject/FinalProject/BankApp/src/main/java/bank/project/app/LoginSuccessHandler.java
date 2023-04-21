@@ -13,28 +13,29 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ResourceBundle;
 
 @Component
 public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     @Autowired
     RoleService roleService;
     private Logger logger = LoggerFactory.getLogger(RoleService.class);
-
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         Role role = (Role) authentication.getPrincipal();
-        logger.info(role.toString());
-        logger.info(" in success handler");
-// if(customer.getAttempts()==0)
-// logger.info("deactivate");
+        ResourceBundle resourceBundle=ResourceBundle.getBundle("role");
+        //if the role status is inactive then cannot login
         if (role.getRoleStatus().equalsIgnoreCase("Inactive")) {
-            logger.info("Inactive");
+            logger.info("Account has been deactivated.Cannot login.");
             super.setDefaultTargetUrl("/logout");
         } else {
+            //on success login
+            logger.info(" in success handler");
+            //set failed attempts to 0 to that user
             roleService.setAttempts(role.getRoleId());
+            //move to the next page
             super.setDefaultTargetUrl("/web/dash");
         }
             super.onAuthenticationSuccess(request, response, authentication);
-
     }
 }
