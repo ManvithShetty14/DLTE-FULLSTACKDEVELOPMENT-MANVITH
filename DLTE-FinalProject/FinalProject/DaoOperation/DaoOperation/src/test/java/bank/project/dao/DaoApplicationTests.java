@@ -32,15 +32,15 @@ class DaoApplicationTests {
 
     // junit testing on the service listAllLoan()
     @Test
-    public void testListLoan() {
+    public void testListLoanScheme() {
         LoanScheme homeLoan=new LoanScheme(160,"Home Loan","GharGhar Loan","Need for home to everyone.", (float) 5.8);
         LoanScheme vehicleLoan=new LoanScheme(180,"Vehicle Loan","Savaari Yojana","Buy the much needed dream vehicle.", (float) 7.8);
         LoanScheme educationLoan=new LoanScheme(185,"Education Loan","Shiksha Yojana","Need to provide quality education to everyone.", (float) 6.8);
         LoanScheme personalLoan=new LoanScheme(190,"Personal Loan","Jeevan Yojana","You can use the funds from this loan for any legitimate financial need.", (float) 8.2);
         List<LoanScheme> tempList = Stream.of(homeLoan,vehicleLoan,educationLoan,personalLoan).collect(Collectors.toList());
         when(jdbcTemplate.query(eq("select * from loan_scheme"),any(RowMapper.class))).thenReturn(tempList);
-        assertNotEquals(0, roleService.listAllLoan().indexOf(vehicleLoan));
-        assertEquals(3,roleService.listAllLoan().indexOf(personalLoan));
+        assertNotEquals(0, roleService.listLoanScheme().indexOf(vehicleLoan));
+        assertEquals(3,roleService.listLoanScheme().indexOf(personalLoan));
     }
 
     // junit testing on the method loginByName()
@@ -66,8 +66,8 @@ class DaoApplicationTests {
         when(jdbcTemplate.update(eq("insert into loan_scheme values(?,?,?,?,?)"), eq(new Object[]{homeLoan.getLoanSchemeId(),homeLoan.getLoanSchemeType(),homeLoan.getLoanSchemeName(),homeLoan.getLoanSchemeDesc(),homeLoan.getLoanSchemeROI()})))
                 .thenReturn(1);
         String data=roleService.insertLoan(homeLoan);
-        assertEquals("Ghar Yojana has created",data);
-        assertNotEquals("Vaahan Yojana has created",data);
+        assertEquals("Ghar Yojana:has been created",data);
+        assertNotEquals("Vaahan:Yojana has been created",data);
     }
 
 }

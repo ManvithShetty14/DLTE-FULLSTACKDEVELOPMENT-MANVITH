@@ -1,5 +1,4 @@
 package bank.project.dao;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,14 +26,12 @@ public class RoleService implements BankOperations , UserDetailsService {
     //declaring the loggers
     private Logger logger= LoggerFactory.getLogger(Role.class);
 
-
-
     //create a service for user login method
 @Override
     public Role loginByName(String name) {
-    try {
+   try {
+       logger.info(resourceBundle.getString("enterLogin"));
         Role role = jdbcTemplate.queryForObject("select * from role where username=? ", new Object[]{name}, new BeanPropertyRowMapper<>(Role.class));
-        logger.warn(resourceBundle.getString("loginquery"));
         return role;
     } catch (DataAccessException e) {
         logger.info(resourceBundle.getString("loginexception")+e);
@@ -44,39 +41,40 @@ public class RoleService implements BankOperations , UserDetailsService {
 
   //method to get the count of failed attempts
     public int getAttempts(int id) {
+        logger.info(resourceBundle.getString("enterGetAttempt"));
         int attempts = jdbcTemplate.queryForObject("select failed_attempts from role where role_id=?",Integer.class,id);
-        logger.info("Returned Attempts");
+        logger.info(resourceBundle.getString("attempts"));
         return attempts;
     }
 
    //method to keep the failed attempts count 0
     public void setAttempts(int id) {
+        logger.info(resourceBundle.getString("enterSetAttempt"));
         jdbcTemplate.update("update role set failed_attempts=0 where role_id=?",id);
-        logger.info("Set attempts to 0");
+        logger.info(resourceBundle.getString("attemptToNull"));
     }
 
     //to set status to inactive if failed attempts count is 3
     public void updateStatus() {
+        logger.info(resourceBundle.getString("enterUpdateStatus"));
         jdbcTemplate.update("update role set role_status='Inactive' where failed_attempts=3");
-        logger.info("Status set to inactive");
+        logger.info(resourceBundle.getString("setStatus"));
     }
 
     //method to increment the failed attempts
     public void incrementFailedAttempts(int id) {
         //if three unsucessfull attempts role account will be deactivated
+        logger.info(resourceBundle.getString("enterIncrementAttempt"));
         jdbcTemplate.update("update role set failed_attempts = failed_attempts + 1 where role_id=?", id);
         jdbcTemplate.update("update role set role_status='Inactive' where failed_attempts=3");
-
     }
 
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        logger.info("Entered loadByUsername() method");
+        logger.info(resourceBundle.getString("enterLoadByUsername"));
         Role role = loginByName(username);
-
         if (role == null){
             throw new UsernameNotFoundException(resourceBundle.getString("noUser"));
         }
-        logger.info("Leaving loadByUsername() method");
         if (role.getRoleStatus().equalsIgnoreCase("inactive")){
             throw new UsernameNotFoundException(resourceBundle.getString("accDeactivated"));
         }
@@ -86,7 +84,7 @@ public class RoleService implements BankOperations , UserDetailsService {
 
    // service to display all the loan scheme available in the bank
     @Override
-    public List<LoanScheme> listAllLoan(){
+    public List<LoanScheme> listLoanScheme() {
     logger.info(resourceBundle.getString("loanlistquery"));
     return jdbcTemplate.query("select * from loan_scheme",new LoanMapper());
     }
@@ -95,7 +93,7 @@ public class RoleService implements BankOperations , UserDetailsService {
     @Override
     public String insertLoan(LoanScheme loan_scheme){
     logger.info(resourceBundle.getString("loancreatequery"));
-    String info=loan_scheme.getLoanSchemeName()+" has created";
+    String info=loan_scheme.getLoanSchemeName()+resourceBundle.getString("createreturn");
     jdbcTemplate.update("insert into loan_scheme values(loan_scheme_id_seq.NEXTVAL,?,?,?,?,LOCALTIMESTAMP(2))",new Object[]{loan_scheme.getLoanSchemeType(),loan_scheme.getLoanSchemeName(),loan_scheme.getLoanSchemeDesc(),loan_scheme.getLoanSchemeROI()});
     return info;
     }
@@ -117,7 +115,6 @@ public class RoleService implements BankOperations , UserDetailsService {
     }
 
     class LoanMapper implements  RowMapper<LoanScheme> {
-
         @Override
         public LoanScheme mapRow(ResultSet rs, int rowNum) throws SQLException{
             LoanScheme loan_scheme=new LoanScheme();
@@ -128,8 +125,7 @@ public class RoleService implements BankOperations , UserDetailsService {
             loan_scheme.setLoanSchemeROI(rs.getFloat("loan_scheme_roi"));
             return loan_scheme;
         }
-
-    }
+}
 
 }
 

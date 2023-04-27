@@ -23,24 +23,10 @@ public class RoleController {
 
     //controller to list all the loan scheme in the bank
     @GetMapping("/display")
-    public List<LoanScheme> getLoanList() {
+    public List<LoanScheme> getLoanScheme() {
         logger.info(resourceBundle.getString("loanList"));
-        List<LoanScheme> listloan = roleService.listAllLoan();
+        List<LoanScheme> listloan = roleService.listLoanScheme();
         logger.info(resourceBundle.getString("listedLoan"));
         return listloan;
     }
-
-    //controller to create a new loan to the bank
-    @PostMapping("/createloan")
-    public String addNewLoan(@RequestParam("loanType") String loanType,@RequestParam("loanName") String loanName,@RequestParam("loanDesc") String loanDesc,@RequestParam("loanROI") Float loanROI){
-        logger.info(resourceBundle.getString("loancreate"));
-        LoanScheme loan_scheme=new LoanScheme();
-        loan_scheme.setLoanSchemeType(loanType);
-        loan_scheme.setLoanSchemeName(loanName);
-        loan_scheme.setLoanSchemeDesc(loanDesc);
-        loan_scheme.setLoanSchemeROI(loanROI);
-        logger.info(resourceBundle.getString("createloan"));
-        return roleService.insertLoan(loan_scheme);
-    }
-
 }

@@ -9,6 +9,28 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <title>Document</title>
+    <script>
+        function loanTypeSpaceBlock() {
+            var loanTypes=document.getElementById("loanType");
+            if(loanTypes.selectionStart===0 && window.event.code==="Space"){
+                window.event.preventDefault();
+            }
+        }
+        function loanNameSpaceBlock(){
+            var loanNames=document.getElementById("loanName");
+            if(loanNames.selectionStart===0 && window.event.code==="Space"){
+                window.event.preventDefault();
+            }
+        }
+        function loanDescSpaceBlock() {
+            var loanDescription=document.getElementById("loanDesc");
+            if(loanDescription.selectionStart===0 && window.event.code==="Space"){
+                window.event.preventDefault();
+            }
+        }
+    </script>
+
+
 <!--    script for the creation of the loan in bank-->
     <script>
         $(document).ready(function () {
@@ -20,81 +42,57 @@
                 var loanDesc = $("input[name=loanDesc]").val()
                 var loanROI = $("input[name=loanROI]").val()
 
+                var soapRequest= "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:soap=\"http://soap.bank.web.bankloansoapwebservice\">\n"+
+                    " <soapenv:Header/>\n"+
+                    "<soapenv:Body>\n"+
+                    "<soap:createNewLoanRequest>\n"+
+                    "<soap:bankloan>\n"+
+                    "<soap:loanSchemeId>?</soap:loanSchemeId>\n"+
+                    "<soap:loanSchemeType>"+loanType+"</soap:loanSchemeType>\n"+
+                    "<soap:loanSchemeName>"+loanName+"</soap:loanSchemeName>\n"+
+                    "<soap:loanSchemeDesc>"+loanDesc+"</soap:loanSchemeDesc>\n"+
+                    "<soap:loanSchemeROI>"+loanROI+"</soap:loanSchemeROI>\n"+
+                    "</soap:bankloan>\n"+
+                    "</soap:createNewLoanRequest>\n"+
+                    "</soapenv:Body>\n"+
+                    "</soapenv:Envelope>"
 
 //Validation
                 $("#error").remove()
                 // $("#success").remove()
 // $("#responseMessage").remove()
+                var correctLoanType=/([a-zA-Z',.-]+( [a-zA-Z',.-]+)*){2,30}/;
                 try{
                     if(loanType===""|| loanName === "" || loanDesc===""|| loanROI === ""){
                         throw "All fields are mandatory"
                     }
-                    else if(((/^[^\d]*$/).test(loanROI))){
-                        throw "ROI should be in numbers"
-                    }
+                    // ajax for validation
+                    $.ajax({
+                        url: "http://localhost:8085/bankloanpoint",
+                        type: "POST",
+                        dataType: "xml",
+                        contentType: "text/xml;charset=\"UTF-8\"",
+                        data: soapRequest,
+                        // if the creation is success it enters below
+                        success: (data) => {
+                            alert("LOAN CREATED!!");
+                            window.location.href = "http://localhost:8085/web/loan/";
+
+                        },
+                        // on some error it enters below
+                        error:()=>{
+                            // alert("LOAN CREATION FAILED!!")
+                            $("#loanExist").append("<div class='row justify-content-center bg-danger-subtle text-danger rounded-4 p-2 ms-3 me-3 mb-1' id='error'><p class='text-center'>"+"Loan Name ("+loanName+") Already Exist"+"</p></div>")
+
+                        }
+                    });
                 }
                 catch(errmsg){
                     $("#responseMessage").append("<div class='row justify-content-center bg-danger-subtle text-danger rounded-4 p-2 ms-3 me-3 mb-1' id='error'><p class='text-center'>"+errmsg+"</p></div>")
                 }
-
-//ajax get method for applying loan
-                $.post("http://localhost:8085/web/loan", {
-                    ltype: loanType,
-                    lname: loanName,
-                    ldesc: loanDesc,
-                    lroi : loanROI,
-                },function (data) {
-                    $("#error").remove()
-                    $("#responseMessage").append("<div class='row justify-content-center bg-success-subtle text-success rounded-4 p-2 ms-3 me-3 mb-1' id='success'><p class='text-center'>"+data+"</p></div>")
-                })
             })
         })
         </script>
-    <script>
-          $(document).ready(()=>{
-              // on click of create button, perform below operation
-             $("#createbtn").click(()=>{
-                 // storing the user entered value in the variabe
-                 let loantype=$("input[name=loanType]").val();
-                 var loanname=$("input[name=loanName]").val();
-                 var loandesc=$("input[name=loanDesc]").val();
-                 var loanroi=$("input[name=loanROI]").val();
-                 //using those values in the soap request
-                 var soapRequest= "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:soap=\"http://soap.bank.web.bankloansoapwebservice\">\n"+
-                     " <soapenv:Header/>\n"+
-                     "<soapenv:Body>\n"+
-                     "<soap:createNewLoanRequest>\n"+
-                     "<soap:bankloan>\n"+
-                     "<soap:loanSchemeId>?</soap:loanSchemeId>\n"+
-                     "<soap:loanSchemeType>"+loantype+"</soap:loanSchemeType>\n"+
-                     "<soap:loanSchemeName>"+loanname+"</soap:loanSchemeName>\n"+
-                     "<soap:loanSchemeDesc>"+loandesc+"</soap:loanSchemeDesc>\n"+
-                     "<soap:loanSchemeROI>"+loanroi+"</soap:loanSchemeROI>\n"+
-                     "</soap:bankloan>\n"+
-                     "</soap:createNewLoanRequest>\n"+
-                     "</soapenv:Body>\n"+
-                     "</soapenv:Envelope>"
-                 // ajax for validation
-                 $.ajax({
-                     url: "http://localhost:8085/bankloanpoint",
-                     type: "POST",
-                     dataType: "xml",
-                     contentType: "text/xml;charset=\"UTF-8\"",
-                     data: soapRequest,
-                     // if the creation is success it enters below
-                     success: (data) => {
-                         alert("LOAN CREATED!!");
-                         window.location.href = "http://localhost:8085/web/loan/";
-
-                     },
-                     // on some error it enters below
-                     error:()=>{
-                             alert("LOAN CREATION FAILED!!")
-                     }
-                 });
-             })
-          })
-    </script>
 <!--    on click of back button go back to the loan scheme page-->
     <script>
         $(document).ready(()=> {
@@ -105,13 +103,6 @@
         });
     </script>
     <style>
-
-        .heading {
-            color: white;
-            text-transform: uppercase;
-            letter-spacing: 5px;
-            font-size: 20px;
-        }
         body {
             background-color: lavender;
             background-repeat: no-repeat;
@@ -165,7 +156,6 @@
                 <li class="nav-item text-center mt-2">
                     <a th:href="@{/logout}"><button class="btn btn-outline-danger rounded-4 me-2"><i class="bi bi-box-arrow-left"></i>Logout</button></a>
                 </li>
-
             </ul>
         </div>
     </div>
@@ -176,42 +166,41 @@
     <div class="justify-content-center row col-5 mt-4 d-flex bg-success-subtle text-center text-dark card p-2 rounded-3 shadow-lg">
 
         <!-- Loan type input -->
+        <h3><b>Loan Creation</b></h3>
         <div class="form-outline mb-4">
             <label class=" required form-label"><b>Loan Type</b></label>
-            <input type="text" id="loanType" name="loanType" class="form-control" placeholder="Loan Type" required />
+            <input type="text" id="loanType" name="loanType" onkeydown="loanTypeSpaceBlock()" class="form-control" placeholder="Loan Type" required />
         </div>
 
         <!-- Loan name input -->
         <div class="form-outline mb-4">
             <label class=" required form-label"><b>Loan Name</b></label>
-            <input type="text" id="loanName" name="loanName" class="form-control" placeholder="Loan Name" required/>
-
+            <input type="text" id="loanName" name="loanName" onkeydown="loanNameSpaceBlock()" class="form-control" placeholder="Loan Name" required/>
         </div>
 
         <!--Loan Description input -->
         <div class="form-outline mb-4">
             <label class=" required form-label"><b>Loan Description</b></label>
-            <input type="text" id="loanDesc" name="loanDesc" class="form-control" placeholder="Loan Description" required/>
-
+            <input type="text" id="loanDesc" name="loanDesc" onkeydown="loanDescSpaceBlock()" class="form-control" placeholder="Loan Description" required/>
         </div>
 
         <!-- Loan ROI input -->
         <div class="form-outline mb-4">
             <label class=" required form-label"><b>Loan ROI</b></label>
-            <input type="number" id="loanROI" name="loanROI" class="form-control" placeholder="Loan ROI"/>
-
+            <input type="number" id="loanROI" name="loanROI" onkeydown="SpaceBlock()" class="form-control" placeholder="Loan ROI"/>
         </div>
-
+<!--        <p class="user text-danger"></p>-->
         <div id="responseMessage">
 
         </div>
+        <div id="loanExist">
 
+        </div>
         <!-- Submit button -->
        <p> <button type="button" class="createbutton btn btn-primary btn-block mb-4" id="createbtn">Create</button>
         <button type="button" class="backbutton btn btn-danger btn-block mb-4" id="backbtn">Back</button></p>
 
     </div>
 </form>
-
 </body>
 </html>

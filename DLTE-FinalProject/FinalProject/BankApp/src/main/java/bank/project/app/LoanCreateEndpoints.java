@@ -14,7 +14,6 @@ import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -35,19 +34,18 @@ public class LoanCreateEndpoints {
         CreateNewLoanResponse createNewLoanResponse =new CreateNewLoanResponse();
         LoanScheme pojo=new LoanScheme();
         ServiceStatus serviceStatus=new ServiceStatus();
-        logger.info("service has been considered.");
+        logger.info("Service has been considered.");
         // source,target
         BeanUtils.copyProperties(createNewLoanRequest.getBankloan(),pojo);
-        logger.info("The table has received the request");
+        logger.info("Request properties are copied to pojo");
         roleService.insertLoan(pojo);
-        logger.trace("Entity has inserted");
+        logger.info("Entity has inserted");
         serviceStatus.setStatus("Success");
         serviceStatus.setMessage("Object Inserted");
         createNewLoanResponse.setBankloan(createNewLoanRequest.getBankloan());
         createNewLoanResponse.setServiceStatus(serviceStatus);
-        logger.info("response object assembled yet to send");
+        logger.info("Response object assembled yet to send");
         return createNewLoanResponse;
     }
-
 }
 

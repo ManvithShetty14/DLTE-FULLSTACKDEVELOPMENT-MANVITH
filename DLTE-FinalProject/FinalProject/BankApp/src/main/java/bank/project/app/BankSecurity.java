@@ -39,6 +39,9 @@ public class BankSecurity {
             requests.antMatchers("/web/dash").authenticated();
             requests.antMatchers("/web/loan").authenticated();
             requests.antMatchers("/web/createloan").authenticated();
+            requests.antMatchers("/web/customersearch").authenticated();
+            requests.antMatchers("/web/approval").authenticated();
+
         });
         httpSecurity.formLogin().loginPage("/web/login").usernameParameter("username").failureHandler(failureHandler).successHandler(successHandler).permitAll();
         httpSecurity.logout().permitAll();

@@ -58,6 +58,14 @@ background-color: lavender;
 background-repeat: no-repeat;
 background-size: cover;
 }
+table{
+    table-layout: fixed;
+    width: 100%;
+}
+/* table td{
+    word-wrap: break-word;
+} */
+
 
 </style>
 <img src="aaradhya logo.jpg" width="5px" height="5px">
@@ -73,7 +81,13 @@ background-size: cover;
 </div>
 
 <div class="table-responsive mt-4 rounded-4">
-<table class="table text-dark table-striped p-2 shadow-lg text-nowrap" cellspacing="1px" cellpadding="1px">
+<table class="table" cellspacing="1px" cellpadding="1px">
+    <col width="10px" />
+    <col width="15px" />
+    <col width="15px" />
+    <col width="50px" />
+    <col width="10px" />
+
 <tr class="bg-info-subtle">
 <th>Loan ID</th>
 <th>Loan Type</th>

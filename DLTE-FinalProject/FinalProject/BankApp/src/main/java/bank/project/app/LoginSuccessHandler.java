@@ -24,18 +24,14 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         Role role = (Role) authentication.getPrincipal();
         ResourceBundle resourceBundle=ResourceBundle.getBundle("role");
-        //if the role status is inactive then cannot login
-        if (role.getRoleStatus().equalsIgnoreCase("Inactive")) {
-            logger.info("Account has been deactivated.Cannot login.");
-            super.setDefaultTargetUrl("/logout");
-        } else {
+
             //on success login
-            logger.info(" in success handler");
+            logger.info("Move in success handler");
             //set failed attempts to 0 to that user
             roleService.setAttempts(role.getRoleId());
             //move to the next page
             super.setDefaultTargetUrl("/web/dash");
-        }
+
             super.onAuthenticationSuccess(request, response, authentication);
     }
 }

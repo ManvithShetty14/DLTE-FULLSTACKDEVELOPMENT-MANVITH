@@ -1,5 +1,4 @@
 package bank.project.app;
-
 import bank.project.dao.RoleService;
 import bank.project.dao.Role;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,13 +29,14 @@ public class LoginFailureHandler extends SimpleUrlAuthenticationFailureHandler {
         //if username not exist in table
         if (role == null) {
             exception = new LockedException(resourceBundle.getString("noUser"));
+            logger.info("Displays the user does not exist error");
             super.setDefaultFailureUrl("/web/login?error=" + resourceBundle.getString("noUser"));
         } else {
             //if the role status is inactive
             if (role.getRoleStatus().equalsIgnoreCase("inactive")) {
-                logger.info(resourceBundle.getString("accDeactivate"));
-                exception = new LockedException(resourceBundle.getString("accDeactivate"));
-                super.setDefaultFailureUrl("/web/login?error=" + resourceBundle.getString("accDeactivate"));
+                logger.info(resourceBundle.getString("accDeactivated"));
+                exception = new LockedException(resourceBundle.getString("accDeactivated"));
+                super.setDefaultFailureUrl("/web/login?error=" + resourceBundle.getString("accDeactivated"));
             } else {
                 // increment the failed attempts
                 roleService.incrementFailedAttempts(role.getRoleId());
@@ -63,9 +63,10 @@ public class LoginFailureHandler extends SimpleUrlAuthenticationFailureHandler {
             }
         }
         super.onAuthenticationFailure(request, response, exception);
-
     }
 }
+
+
 
 
 

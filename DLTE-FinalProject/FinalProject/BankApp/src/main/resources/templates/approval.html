@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta charset="UTF-8">
@@ -10,10 +10,11 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     <script>
         $(document).ready(()=> {
-            $("#exitbtn").click(() => {
+            $("#backbtn").click(() => {
                     window.location.href = "http://localhost:8085/web/dash";
                 }
             );
@@ -23,29 +24,53 @@
 
 <body>
 <style>
-    button {
-        width: 70px;
-        height: 30px;
-    }
+    /*button {*/
+    /*    width: 70px;*/
+    /*    height: 30px;*/
+    /*}*/
 
     body {
         background-color: lavender;
         background-repeat: no-repeat;
         background-size: cover;
     }
+    .backbutton {
+        border: 2px solid black;
+        width: 100px;
+        height: 40px;
+    }
+
+
 
 </style>
-<img src="aaradhya logo.jpg" width="5px" height="5px">
+
+<nav class="navbar navbar-expand-lg">
+    <!--    describe the nav bar like the background color and corner rounded-->
+    <div class="container-fluid bg-dark rounded-4">
+        <a class="navbar-brand " href="#">
+            <!--            create the bank logo and name at the top-->
+            <div class="row justify-content-center text-light bg-dark rounded-4 mt-3 col-lg-12 col-md-8 col-sm-12">
+                <h1 class="text-center" > <img id="logo" th:src="@{/images/originlogo.png}" class="p-2 rounded-4" width="70px" height="70px" /> ORIGIN BANK</h1>
+            </div>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#union">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="union">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <!--                logout button-->
+                <li class="nav-item mt-2">
+                    <a th:href="@{/logout}"><button  type="submit" class="lgout btn btn-outline-danger rounded-4 me-2">Logout<i class="ms-1 bi bi-box-arrow-left"></i></button></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
 <div class="container">
     <div class="row justify-content-center text-dark bg-info-subtle rounded-4 mt-3 col-lg-12 col-md-8 col-sm-12">
         <h1 class="text-center">List Of Approvals</h1>
     </div>
 
-    <div class="row justify-content-around">
-        <div class="col-lg-12 col-md-8 col-sm-12 card bg-info-subtle rounded-4 p-2 mt-2">
-            <p>A bank is a financial institution which creates credit by lending money to a borrower thus creating a corresponding deposit on the bank’s balance sheet. <br>This blog talks about the key benefits of a bank account.</p>
-        </div>
-    </div>
 
     <div class="table-responsive mt-4 rounded-4">
         <table class="table text-dark table-striped p-2 shadow-lg text-nowrap" cellspacing="1px" cellpadding="1px">
@@ -96,8 +121,7 @@
     </div>
 
     <br>
-
-    <button type="Exit" name="exitbtn" id="exitbtn" class="bg-danger">Exit</button>
+    <button type="button" class="backbutton btn btn-danger btn-block mb-4 ms-2" id="backbtn">Back</button>
 
 </div>
 
